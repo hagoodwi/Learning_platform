@@ -5,8 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :user_profile
+  has_and_belongs_to_many :groups
 
-  after_create :create_user_profile
+  after_create :create_user_profile, :assign_default_group
 
   attr_accessor :first_name, :second_name, :last_name
 
@@ -15,5 +16,10 @@ class User < ApplicationRecord
   private
     def create_user_profile
       self.create_user_profile!(first_name: self.first_name, second_name: self.second_name, last_name: self.last_name, is_block: false)
+    end
+
+    def assign_default_group
+      default_group = Group.find_or_create_by(name: "Users")
+      self.groups << default_group
     end
 end
