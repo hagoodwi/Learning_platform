@@ -4,5 +4,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   devise_for :users, controllers: { registrations: 'users/registrations' }
+  # resources :groups
   root "static_pages#home"
+
+  resources :groups do
+    member do
+      get 'show_users'
+      post 'add_user'
+      post 'add_users'
+    end
+  end
 end

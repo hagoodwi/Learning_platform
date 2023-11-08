@@ -1,0 +1,21 @@
+<h1> Группа "<%= @group.name %>" </h1>
+<p><%= @group.description %></p>
+
+<h2>Список пользователей в группе</h2>
+<ul>
+  <% @users.each do |user| %>
+    <li><%= user.user_profile.second_name %> <%= user.user_profile.last_name %> </li>
+  <% end %>
+</ul>
+
+<h2>Добавить пользователя в группу</h2>
+<%= form_tag add_user_group_path(@group), method: :post do %>
+  <%= collection_select(:user, :id, User.where.not(id: @group.user_ids), :id, :email) %>
+  <%= submit_tag 'Добавить' %>
+<% end %>
+
+<h2>Добавить пользователей в группу</h2>
+<%= form_tag add_users_group_path(@group), method: :post do %>
+  <%= collection_check_boxes(:group, :user_ids, @userss, :id, :email) %>
+  <%= submit_tag 'Добавить' %>
+<% end %>

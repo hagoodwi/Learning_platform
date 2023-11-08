@@ -19,8 +19,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_31_165735) do
   end
 
   create_table "groups_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "group_id"
+    t.integer "user_id", null: false
+    t.integer "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_groups_users_on_group_id"
@@ -50,5 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_31_165735) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "groups_users", "groups"
+  add_foreign_key "groups_users", "users"
   add_foreign_key "user_profiles", "users"
 end
