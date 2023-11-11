@@ -1,0 +1,5 @@
+<h1><%= @material.name %></h1>
+
+<p><strong>Загруженный файл:</strong></p>
+<%= image_tag(@material.file) if @material.file.image? %>
+<%= link_to @material.file.filename, @material.file if @material.file.blob %>

@@ -1,0 +1,11 @@
+<h1>Новый материал</h1>
+
+<%= form_with model: @material, url: materials_path, multipart: true do |form| %>
+  <div class="field">
+    <%= form.file_field :file %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   # resources :groups
   root "static_pages#home"
 
+  resources :materials
   resources :groups do
     member do
       get 'show_users'
