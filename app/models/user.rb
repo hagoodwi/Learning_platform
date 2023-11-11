@@ -13,6 +13,10 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true
 
+  def full_name
+    "#{self.user_profile.first_name} #{self.user_profile.second_name}"
+  end
+
   private
     def create_user_profile
       self.create_user_profile!(first_name: self.first_name, second_name: self.second_name, last_name: self.last_name, is_block: false)
