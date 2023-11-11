@@ -1,0 +1,31 @@
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+  <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+    <p class="h1 mb-3 fw-bold"><%= @group.name %></p>
+  </ul>
+
+  <div class="text-end">
+    <%= button_to 'Редактировать', edit_group_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+  </div>
+</div>
+
+<p class="lead"><%= @group.description %></p>
+
+<p class="h4 mb-3 fw">Пользователи в группе</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Отчество</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @users_in_group.each do |user| %>
+      <tr>
+        <td><%= label_tag "#{user.user_profile.last_name}" %></td>
+        <td><%= label_tag "#{user.user_profile.first_name}" %></td>
+        <td><%= label_tag "#{user.user_profile.second_name}" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
