@@ -1,0 +1,12 @@
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+  <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+    <p class="h1 mb-3 fw-bold"><%= @course.name %></p>
+  </ul>
+
+  <div class="text-end">
+    <%= button_to 'Редактировать', edit_course_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+  </div>
+</div>
+
+<span class="mark"><%= "#{@course.start_date} - #{@course.end_date}" %></span>
+<p class="lead"><%= @course.description %></p>
