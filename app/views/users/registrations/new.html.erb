@@ -1,6 +1,7 @@
 <p class="h1 mb-3 fw-bold"> Регистрация </p>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "users/shared/error_messages", resource: resource %>
+
   <div class="form-floating">
     <%= f.email_field :email, class: "form-control", id: "floatingInput", autofocus: true, autocomplete: "email", placeholder: "" %>
     <%= f.label "email", for: "floatingInput", class: "form-label" %>

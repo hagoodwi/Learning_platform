@@ -3,12 +3,12 @@
 <%= form_for @group do |f| %>
   <div class="form-floating">
     <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
-    <%= f.label :name, for: "floatingInput", class: "form-label" %>
+    <%= f.label "Название", for: "floatingInput", class: "form-label" %>
   </div>
 
   <div class="form-floating">
     <%= f.text_area :description, class: "form-control", id: "floatingInput", placeholder: ""  %>
-    <%= f.label :description, for: "floatingInput", class: "form-label" %>
+    <%= f.label "Описание", for: "floatingInput", class: "form-label" %>
   </div>
 
   <%# <%= f.label :description, for: "formControlInput", class: "form-label" %>
