@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   has_one :user_profile
   has_and_belongs_to_many :groups
+  has_many :role_user
+  has_many :role, through: :role_user
 
   after_create :create_user_profile, :assign_default_group
 
