@@ -1,0 +1,31 @@
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <p class="h1 mb-3 fw-bold"><%= @course.name %></p>
+    </ul>
+</div>
+
+<%= form_with url: "/courses/#{@course.id}/teachers", method: :patch do |f| %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @teacher_role_users.each do |role_user| %>
+        <tr>
+          <th scope="row">
+            <%= check_box_tag 'course[teacher_role_users][]', role_user.id, @course.role_users.include?(role_user) %>
+          </th>
+          <td><%= label_tag "#{role_user.user.user_profile.last_name}" %></td>
+          <td><%= label_tag "#{role_user.user.user_profile.first_name}" %></td>
+          <td><%= label_tag "#{role_user.user.user_profile.second_name}" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table> 
+  <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
+<% end %>
