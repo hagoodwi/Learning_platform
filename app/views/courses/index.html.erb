@@ -24,7 +24,7 @@
         <td>
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <%= link_to 'Edit', edit_course_path(course), class: "btn btn-outline-secondary btn-sm" %>
-            <%= button_to 'Delete', course, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
+            <%= link_to 'Delete', course, data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
             <%= link_to 'Show', course, class: "btn btn-outline-secondary btn-sm" %>
           </div>
         </td>
