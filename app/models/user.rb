@@ -20,6 +20,10 @@ class User < ApplicationRecord
     "#{self.user_profile.first_name} #{self.user_profile.second_name}"
   end
 
+  def has_role?(role_name)
+    self.roles.exists?(name: role_name)
+  end
+
   private
     def assign_user_role
       user_role = Role.find_or_create_by(name: "student")

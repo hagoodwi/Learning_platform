@@ -1,0 +1,42 @@
+<%= render "admin/shared/nav" %>
+
+<p class="h1 mb-3 fw-bold">Создание группы</p>
+<%= form_for @group, url: admin_groups_path do |f| %>
+  <div class="form-floating">
+    <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
+    <%= f.label "Название", for: "floatingInput", class: "form-label" %>
+  </div>
+
+  <div class="form-floating">
+    <%= f.text_area :description, class: "form-control", id: "floatingInput", placeholder: ""  %>
+    <%= f.label "Описание", for: "floatingInput", class: "form-label" %>
+  </div>
+
+  <%# <%= f.label :description, for: "formControlInput", class: "form-label" %>
+  <%# <%= f.text_area :description, class: "form-control", id: "formControlInput", placeholder: "Описание" %>
+  
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+        <tr>
+          <th scope="row">
+            <%= check_box_tag 'group[user_ids][]', user.id, @group.users.include?(user) %>
+          </th>
+          <td><%= label_tag "#{user.user_profile.last_name}" %></td>
+          <td><%= label_tag "#{user.user_profile.first_name}" %></td>
+          <td><%= label_tag "#{user.user_profile.second_name}" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>           
+
+  <%= f.submit 'Создать', class: "btn btn-primary w-100 py-2" %>
+<% end %>

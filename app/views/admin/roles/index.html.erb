@@ -1,0 +1,36 @@
+<%= render "admin/shared/nav" %>
+
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+  <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+    <p class="h2 mb-3 fw">Список ролей</p>
+  </ul>
+
+  <div class="text-end">
+    <%= button_to '+ Создать', new_admin_role_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+  </div>
+</div>
+
+
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Название</th>
+      <th scope="col">Пользователи</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @roles.each do |role| %>
+      <tr>
+        <td><%= label_tag "#{role.name}" %></td>
+        <td><%= label_tag "#{role.users.length}" %></td>
+        <td>
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <%= button_to 'Delete', admin_role_path(role), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
+            <%= link_to 'Show', admin_role_path(role), class: "btn btn-outline-secondary btn-sm" %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

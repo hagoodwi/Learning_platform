@@ -15,5 +15,16 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :admin do
+    resources :users, only: [:index, :edit, :update] do
+      # member do
+      #   patch 'toggle_block' => 'users#toggle_block'
+      # end
+    end
+    root "roles#index"
+    resources :roles
+    resources :groups
+  end
+
   root "static_pages#home"
 end

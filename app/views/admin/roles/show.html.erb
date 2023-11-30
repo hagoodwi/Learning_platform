@@ -1,0 +1,21 @@
+<%= render "admin/shared/nav" %>
+
+<p class="h2 mb-3 fw">Пользователи с ролью</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Отчество</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @users_with_role.each do |user_role| %>
+      <tr>
+        <td><%= label_tag "#{user_role.user_profile.last_name}" %></td>
+        <td><%= label_tag "#{user_role.user_profile.first_name}" %></td>
+        <td><%= label_tag "#{user_role.user_profile.second_name}" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
