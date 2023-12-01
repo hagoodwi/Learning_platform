@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   devise_for :users, controllers: { registrations: 'users/registrations'}
 
+
   resources :groups
   resources :courses do
     member do
@@ -21,7 +22,7 @@ Rails.application.routes.draw do
       #   patch 'toggle_block' => 'users#toggle_block'
       # end
     end
-    root "roles#index"
+    root "users#index"
     resources :roles
     resources :groups
   end

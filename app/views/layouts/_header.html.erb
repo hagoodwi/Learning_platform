@@ -7,13 +7,24 @@
           <li><%= link_to "Дисциплины", '#', class: "nav-link px-2 text-white" %></li>
           <li><%= link_to "Курсы", courses_path, class: "nav-link px-2 text-white" %></li>
           <% if current_user&.has_role?('admin') %>
-            <li><%= link_to "Администрирование", admin_roles_path, class: "nav-link px-2 text-white" %></li>
+            <li><%= link_to "Администрирование", admin_users_path, class: "nav-link px-2 text-white" %></li>
           <% end %>
         </ul>
 
         <div class="navbar-right">
           <% if user_signed_in? %>
-            <%= button_to 'Выйти', destroy_user_session_path, :method => :delete, type: "button", class: "btn btn-outline-light me-2" %>
+            <div class="dropdown text-end">
+              <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+              </a>
+              <ul class="dropdown-menu text-small">
+                <li><a class="dropdown-item" href="#">Новый проект...</a></li>
+                <li><a class="dropdown-item" href="#">Настройка</a></li>
+                <li><a class="dropdown-item" href="#">Профиль</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= button_to 'Выйти', destroy_user_session_path, :method => :delete, type: "button", class: "dropdown-item" %></li>
+              </ul>
+            </div>
           <% else %>
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <%= button_to 'Войти', new_user_session_path, :method => :get, type: "button", class: "btn btn-outline-light me-2" %>
