@@ -46,6 +46,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_disciplines_on_name", unique: true
+ActiveRecord::Schema[7.0].define(version: 2023_11_14_193455) do
+  create_table "courses", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.text "description"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "courses_role_users", force: :cascade do |t|
+    t.integer "course_id", null: false
+    t.integer "role_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_courses_role_users_on_course_id"
+    t.index ["role_user_id"], name: "index_courses_role_users_on_role_user_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -64,6 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
     t.index ["user_id"], name: "index_groups_users_on_user_id"
   end
 
+<<<<<<< HEAD
   create_table "material_accesses", force: :cascade do |t|
     t.integer "material_id", null: false
     t.boolean "always_open"
@@ -80,6 +98,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
     t.datetime "updated_at", null: false
     t.integer "discipline_id", null: false
     t.index ["discipline_id"], name: "index_materials_on_discipline_id"
+=======
+  create_table "role_users", force: :cascade do |t|
+    t.integer "role_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_role_users_on_role_id"
+    t.index ["user_id"], name: "index_role_users_on_user_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+>>>>>>> origin/main
   end
 
   create_table "user_profiles", force: :cascade do |t|
@@ -105,11 +138,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+<<<<<<< HEAD
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "groups_users", "groups"
   add_foreign_key "groups_users", "users"
   add_foreign_key "material_accesses", "materials"
   add_foreign_key "materials", "disciplines"
+=======
+  add_foreign_key "courses_role_users", "courses"
+  add_foreign_key "courses_role_users", "role_users"
+  add_foreign_key "groups_users", "groups"
+  add_foreign_key "groups_users", "users"
+  add_foreign_key "role_users", "roles"
+  add_foreign_key "role_users", "users"
+>>>>>>> origin/main
   add_foreign_key "user_profiles", "users"
 end

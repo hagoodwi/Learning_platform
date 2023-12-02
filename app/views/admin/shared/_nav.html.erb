@@ -1,0 +1,15 @@
+<div class="nav-scroller bg-body shadow-sm">
+    <nav class="nav" aria-label="Secondary navigation">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"> 
+                <%= link_to "Пользователи", admin_users_path, class: "nav-link #{path_start_with_active("/admin/user")}" %> 
+            </li>
+            <li class="nav-item"> 
+                <%= link_to "Группы", admin_groups_path, class: "nav-link #{path_start_with_active("/admin/group")}" %> 
+            </li>
+            <li class="nav-item"> 
+                <%= link_to "Роли", admin_roles_path, class: "nav-link #{path_start_with_active("/admin/role")}" %> 
+            </li>
+        </ul>
+    </nav>
+</div>

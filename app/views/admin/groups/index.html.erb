@@ -1,0 +1,35 @@
+<%= render "admin/shared/nav" %>
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Список групп</h3>
+    <div class="text-end">
+      <%= button_to '+ Создать', new_admin_group_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Название</th>
+        <th scope="col">Пользователи</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @groups.each do |group| %>
+        <tr>
+          <td><%= label_tag "#{group.name}" %></td>
+          <td><%= label_tag "#{group.users.length}" %></td>
+          <td>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <%= link_to 'Edit', edit_admin_group_path(group), class: "btn btn-outline-secondary btn-sm" %>
+              <%= button_to 'Delete', admin_group_path(group), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Show', admin_group_path(group), class: "btn btn-outline-secondary btn-sm" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

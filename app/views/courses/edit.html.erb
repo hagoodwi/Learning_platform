@@ -1,0 +1,32 @@
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Редактирование</h3>
+    <div class="text-end">
+      <%= button_to 'Отмена', @course, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+
+  <%= form_for @course do |f| %>
+    <div class="form-floating">
+      <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Название", for: "floatingInput", class: "form-label" %>
+    </div>
+
+    <div class="form-floating">
+      <%= f.date_field :start_date, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Дата начала", for: "floatingInput", class: "form-label" %>
+    </div>
+  
+    <div class="form-floating">
+      <%= f.date_field :end_date, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Дата окончания", for: "floatingInput", class: "form-label" %>
+    </div>
+
+    <div class="form-floating">
+      <%= f.text_field :description, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Описание", for: "floatingInput", class: "form-label" %>
+    </div>
+
+    <%= f.submit 'Создать', class: "btn btn-primary w-100 py-2" %>
+  <% end %>
+</div>

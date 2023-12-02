@@ -1,0 +1,41 @@
+<%= render "admin/shared/nav" %>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <section class="user_info">
+                <div class="text-center">
+                    <%= image_tag("users_image.png", alt: "Rails logo", class: "img-fluid", width:"350", height: "350") %>
+                </div>
+                <h3 class="text-center">
+                    <%= "#{@user.user_profile.last_name} #{@user.user_profile.first_name} #{@user.user_profile.second_name}" %>
+                </h3>
+
+                <h6> Роли:
+                    <% @user_roles.each do |role| %>
+                        <span class="badge bg-success"><%= "#{role.name}" %></span>
+                    <% end %>
+                </h6>
+            </section>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <section class="user_info">
+                <div class="text-center">
+                    <%= image_tag("users_image.png", alt: "Rails logo", class: "img-fluid", width:"350", height: "350") %>
+                </div>
+                <h3 class="text-center">
+                    <%= "#{@user.user_profile.last_name} #{@user.user_profile.first_name} #{@user.user_profile.second_name}" %>
+                </h3>
+
+                <h6> Роли:
+                    <% @user_roles.each do |role| %>
+                        <span class="badge bg-success"><%= "#{role.name}" %></span>
+                    <% end %>
+                </h6>
+            </section>
+        </div>
+    </div>
+</div>
