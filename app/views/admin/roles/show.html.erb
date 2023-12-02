@@ -1,21 +1,26 @@
 <%= render "admin/shared/nav" %>
 
-<p class="h2 mb-3 fw">Пользователи с ролью</p>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Фамилия</th>
-      <th scope="col">Имя</th>
-      <th scope="col">Отчество</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @users_with_role.each do |user_role| %>
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Пользователи с ролью</h3>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= label_tag "#{user_role.user_profile.last_name}" %></td>
-        <td><%= label_tag "#{user_role.user_profile.first_name}" %></td>
-        <td><%= label_tag "#{user_role.user_profile.second_name}" %></td>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @users_with_role.each do |user_role| %>
+        <tr>
+          <td><%= label_tag "#{user_role.user_profile.last_name}" %></td>
+          <td><%= label_tag "#{user_role.user_profile.first_name}" %></td>
+          <td><%= label_tag "#{user_role.user_profile.second_name}" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

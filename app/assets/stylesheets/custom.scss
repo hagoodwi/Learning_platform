@@ -1,5 +1,21 @@
 @import "bootstrap";
 
+
+// Используется для ссылок в списке
+.link-list {
+  text-decoration: none; /* Убираем подчеркивание */
+  color: #212425; /* Цвет текста по умолчанию */
+
+  /* При наведении меняем цвет текста */
+  &:hover {
+    color: #52595f;
+  }
+}
+
+// body {
+//   background-color: rgb(245, 248, 250); /* Цвет темного фона, замените на нужный вам цвет */
+// }
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;

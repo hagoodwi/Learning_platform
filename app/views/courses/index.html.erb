@@ -1,34 +1,33 @@
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-  <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-    <p class="h1 mb-3 fw-bold">Курсы</p>
-  </ul>
-
-  <div class="text-end">
-    <%= button_to '+ Создать', new_course_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Курсы</h3>
+    <div class="text-end">
+      <%= button_to '+ Создать', new_course_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
   </div>
-</div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Название</th>
-      <th scope="col">Даты проведения</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @courses.each do |course| %>
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= label_tag "#{course.name}" %></td>
-        <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
-        <td>
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <%= link_to 'Edit', edit_course_path(course), class: "btn btn-outline-secondary btn-sm" %>
-            <%= link_to 'Delete', course, data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
-            <%= link_to 'Show', course, class: "btn btn-outline-secondary btn-sm" %>
-          </div>
-        </td>
+        <th scope="col">Название</th>
+        <th scope="col">Даты проведения</th>
+        <th scope="col"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    <% @courses.each do |course| %>
+        <tr>
+          <td><%= label_tag "#{course.name}" %></td>
+          <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
+          <td>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <%= link_to 'Edit', edit_course_path(course), class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Delete', course, data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Show', course, class: "btn btn-outline-secondary btn-sm" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

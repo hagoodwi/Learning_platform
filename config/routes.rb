@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations'}
 
 
+  resources :users, only: [:edit, :update, :show]
   resources :groups
   resources :courses do
     member do
@@ -17,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :users, only: [:index, :edit, :update] do
+    resources :users, only: [:index, :show, :edit, :update] do
       # member do
       #   patch 'toggle_block' => 'users#toggle_block'
       # end

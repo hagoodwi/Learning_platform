@@ -1,27 +1,14 @@
-<%= render "admin/shared/nav" %>
+<%= render "admin/shared/nav" %>    
 
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-  <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-    <p class="h2 mb-3 fw">Пользователи</p>
-  </ul>
-</div>
-
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Фамилия</th>
-      <th scope="col">Имя</th>
-      <th scope="col">Отчество</th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <h3 class="border-bottom pb-2 mb-0">Список пользователей</h3>
+  
   <% @users.each do |user| %>
-      <tr>
-        <td><%= label_tag "#{user.user_profile.last_name}" %></td>
-        <td><%= label_tag "#{user.user_profile.first_name}" %></td>
-        <td><%= label_tag "#{user.user_profile.second_name}" %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <div class="d-flex text-body-secondary pt-3">
+      <%= image_tag("users_image.png", alt: "mdo", width:"40", height: "40", class: "bd-placeholder-img flex-shrink-0 me-2 rounded") %>
+      <div class="pb-4 mb-2 small lh-sm border-bottom w-100">
+        <strong class="d-block text-gray-dark mw-100"> <%= link_to user.full_name, admin_user_path(user), class: "link-list" %> </strong>
+      </div>
+    </div>
+  <% end %>
+</div>
