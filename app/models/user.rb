@@ -17,7 +17,11 @@ class User < ApplicationRecord
   validates :first_name, presence: true
 
   def full_name
-    "#{self.user_profile.first_name} #{self.user_profile.second_name}"
+    "#{self.user_profile.last_name} #{self.user_profile.first_name} #{self.user_profile.second_name}"
+  end
+
+  def has_role?(role_name)
+    self.roles.exists?(name: role_name)
   end
 
   private

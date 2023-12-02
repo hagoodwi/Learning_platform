@@ -1,10 +1,12 @@
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <p class="h1 mb-3 fw-bold"><%= @course.name %></p>
-    </ul>
-</div>
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto"><%= @course.name %></h3>
+    <div class="text-end">
+      <%= button_to 'Отмена', @course, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
 
-<%= form_with url: "/courses/#{@course.id}/students", method: :patch do |f| %>
+  <%= form_with url: "/courses/#{@course.id}/students", method: :patch do |f| %>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -15,7 +17,7 @@
         </tr>
       </thead>
       <tbody>
-      <% @student_role_users.each do |role_user| %>
+        <% @student_role_users.each do |role_user| %>
           <tr>
             <th scope="row">
               <%= check_box_tag 'course[student_role_users][]', role_user.id, @course.role_users.include?(role_user) %>
@@ -28,4 +30,5 @@
       </tbody>
     </table> 
     <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
-<% end %>
+  <% end %>
+</div>

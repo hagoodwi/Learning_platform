@@ -1,0 +1,98 @@
+<%= render "admin/shared/nav" %>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <section class="user_info">
+                <div class="text-center">
+                    <%= image_tag("users_image.png", alt: "Rails logo", class: "img-fluid", width:"350", height: "350") %>
+                </div>
+                <h3 class="text-center">
+                    <%= "#{@user.user_profile.last_name} #{@user.user_profile.first_name} #{@user.user_profile.second_name}" %>
+                </h3>
+
+                <h6 class="mt-4"> Роли:
+                    <% @user_roles.each do |role| %>
+                        <span class="badge bg-success"><%= "#{role.name}" %></span>
+                    <% end %>
+                </h6>
+            </section>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+                <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Группы</h3>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Название</th>
+                    <th scope="col">Пользователи</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @user_groups.each do |group| %>
+                    <tr>
+                    <td><%= label_tag "#{group.name}" %></td>
+                    <td><%= label_tag "#{group.users.length}" %></td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+                <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Активные курсы</h3>
+            </div>
+
+            <% if @courses_where_student.empty? %>
+                <p class="lead alert alert-info"> Активных курсов нет </p>
+            <% else %>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Название</th>
+                        <th scope="col">Даты проведения</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @courses_where_student.each do |course| %>
+                        <tr>
+                        <td><%= label_tag "#{course.name}" %></td>
+                        <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            <% end %>
+        </div>
+
+        <% if !@courses_where_teacher.empty? %>
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+                    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">В роли преподавателя</h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Даты проведения</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @courses_where_teacher.each do |course| %>
+                            <tr>
+                            <td><%= label_tag "#{course.name}" %></td>
+                            <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        <% end %>
+    </div>
+</div>

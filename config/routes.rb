@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   devise_for :users, controllers: { registrations: 'users/registrations'}
 
+
+  resources :users, only: [:edit, :update, :show]
   resources :groups
   resources :courses do
     member do
@@ -13,6 +15,17 @@ Rails.application.routes.draw do
       get 'students' => 'courses#edit_students'
       patch 'students' => 'courses#update_students'
     end
+  end
+
+  namespace :admin do
+    resources :users, only: [:index, :show, :edit, :update] do
+      # member do
+      #   patch 'toggle_block' => 'users#toggle_block'
+      # end
+    end
+    root "users#index"
+    resources :roles
+    resources :groups
   end
 
   root "static_pages#home"

@@ -3,19 +3,31 @@
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><%= link_to "Главная", root_path, class: "nav-link px-2 text-white" %></li>
-          <li><%= link_to "Группы", groups_path, class: "nav-link px-2 text-white" %></li>
+          <li><%= link_to "Главная", root_path, class: "nav-link px-2 text-#{nav_active("/catalog")}" %></li>
           <li><%= link_to "Дисциплины", '#', class: "nav-link px-2 text-white" %></li>
-          <li><%= link_to "Курсы", courses_path, class: "nav-link px-2 text-white" %></li>
+          <li><%= link_to "Курсы", courses_path, class: "nav-link px-2 text-#{nav_active("/course")}" %></li>
+          <% if current_user&.has_role?('admin') %>
+            <li><%= link_to "Администрирование", admin_users_path, class: "nav-link px-2 text-#{nav_active("/admin")}" %></li>
+          <% end %>
         </ul>
 
         <div class="navbar-right">
           <% if user_signed_in? %>
-            <%= button_to 'Выйти', destroy_user_session_path, :method => :delete, type: "button", class: "btn btn-outline-light me-2" %>
+            <div class="dropdown text-end">
+              <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= image_tag("users_image.png", alt: "mdo", width:"32", height: "32", class: "rounded-circle") %>
+              </a>
+              <ul class="dropdown-menu text-small">
+                <li><a class="dropdown-item" href="#">Настройка</a></li>
+                <li><%= link_to "Профиль", user_path(current_user), class: "dropdown-item" %></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= button_to 'Выйти', destroy_user_session_path, :method => :delete, type: "button", class: "dropdown-item" %></li>
+              </ul>
+            </div>
           <% else %>
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <%= button_to 'Войти', new_user_session_path, :method => :get, type: "button", class: "btn btn-outline-light me-2" %>
-              <%= button_to 'Регистрация', new_user_registration_path, :method => :get, type: "button", class: "btn btn-warning" %>
+              <%= button_to 'Регистрация', new_user_registration_path, :method => :get, type: "button", class: "btn btn-success" %>
               <%# <button type="button" class="btn btn-outline-light me-2">Войти</button>
               <button type="button" class="btn btn-warning">Зарегистрироваться</button> %>
             </div>
