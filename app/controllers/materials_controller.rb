@@ -1,14 +1,25 @@
 class MaterialsController < ApplicationController
+  before_action :set_discipline, only: [:new, :create, :_new_modal]
+
   def new
-    @material = Material.new
+    @material = @discipline.materials.build
+    @discipline = Discipline.find(params[:discipline_id])
+  end
+
+  def index
+    @materials = Material.all
   end
 
   def create
-    @material = Material.create!(material_params)
-    if @material.save
-      redirect_to @material, notice: 'Материал успешно создан.'
+    @material = @discipline.materials.build(material_params)
+    if params[:material][:file].nil?
+      redirect_to request.referer, alert: 'Пожалуйста, выберите файл.'
+    elsif @material.save
+      respond_to do |format|
+        format.js
+      end
     else
-      render :new
+      redirect_to request.referer, alert: 'Ошибка при добавлении материала.'
     end
   end
 
@@ -18,7 +29,11 @@ class MaterialsController < ApplicationController
 
   private
 
+  def set_discipline
+    @discipline = Discipline.find(params[:discipline_id])
+  end
+
   def material_params
-    params.require(:material).permit(:file,:name,:add_date)
+    params.require(:material).permit(:file, :name)
   end
 end

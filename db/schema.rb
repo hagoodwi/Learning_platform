@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_11_172829) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_172829) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "disciplines", force: :cascade do |t|
+    t.string "name"
+    t.integer "duration"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_disciplines_on_name", unique: true
+  end
+
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -55,10 +64,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_172829) do
     t.index ["user_id"], name: "index_groups_users_on_user_id"
   end
 
+  create_table "material_accesses", force: :cascade do |t|
+    t.integer "material_id", null: false
+    t.boolean "always_open"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["material_id"], name: "index_material_accesses_on_material_id"
+  end
+
   create_table "materials", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "discipline_id", null: false
+    t.index ["discipline_id"], name: "index_materials_on_discipline_id"
   end
 
   create_table "user_profiles", force: :cascade do |t|
@@ -88,5 +109,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_172829) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "groups_users", "groups"
   add_foreign_key "groups_users", "users"
+  add_foreign_key "material_accesses", "materials"
+  add_foreign_key "materials", "disciplines"
   add_foreign_key "user_profiles", "users"
 end
