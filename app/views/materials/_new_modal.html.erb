@@ -1,0 +1,42 @@
+<%= form_with(model: Material.new, url: discipline_materials_path(@discipline), remote: true) do |form1| %>
+    <div>
+      <%= form1.label :name, 'Название материала' %>
+      <%= form1.text_field :name %>
+    </div>
+  
+    <div>
+      <%= form1.label :file, 'Файл' %>
+      <%= form1.file_field :file %>
+    </div>
+  
+    <div>
+      <%= form1.label :visible_for_a_period, 'Видим на время' %>
+      <%= form1.check_box :visible_for_a_period %>
+    </div>
+  
+    <div id="period-fields" style="display: none;">
+      <div>
+        <%= form1.label :start_time, 'Время открытия' %>
+        <%= form1.datetime_local_field :start_time %>
+      </div>
+  
+      <div>
+        <%= form1.label :end_time, 'Время закрытия' %>
+        <%= form1.datetime_local_field :end_time %>
+      </div>
+    </div>
+    <div>
+      <%= form1.submit 'Создать материал' %>
+    </div>
+  <% end %>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var visibleForAPeriodCheckbox = document.querySelector('#material_visible_for_a_period');
+      var periodFields = document.getElementById('period-fields');
+  
+      visibleForAPeriodCheckbox.addEventListener('change', function() {
+        periodFields.style.display = visibleForAPeriodCheckbox.checked ? 'block' : 'none';
+      });
+    });
+  </script>

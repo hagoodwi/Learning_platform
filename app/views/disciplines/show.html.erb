@@ -1,0 +1,6 @@
+<h1><%= @discipline.name %></h1>
+
+<h2>Материалы:</h2>
+<%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
+
+<%= link_to 'Назад к списку', disciplines_path %>

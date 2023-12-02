@@ -1,0 +1,16 @@
+<h1>Список дисциплин</h1>
+
+<% if @disciplines.any? %>
+  <ul>
+    <% @disciplines.each do |discipline| %>
+      <li>
+        <%= link_to discipline.name, discipline_path(discipline) %>
+        | <%= link_to 'Редактировать', edit_discipline_path(discipline) %>
+        | <%= link_to 'Удалить', discipline, method: :delete, data: { confirm: 'Вы уверены?' } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Нет доступных дисциплин.</p>
+<% end %>
+<%= link_to 'Создать новую дисциплину', new_discipline_path %>

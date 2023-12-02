@@ -1,0 +1,8 @@
+<h1><%= @material.name %></h1>
+
+<p><strong>Дата добавления:</strong> <%= @material.created_at.to_date %></p>
+<p><strong>Дисциплина:</strong> <%= @material.discipline.name %></p>
+
+<%= link_to 'Скачать', rails_blob_path(@material.file, disposition: "attachment") %>
+
+<%= link_to 'Назад к списку материалов', discipline_materials_path(@material.discipline) %>

@@ -1,0 +1,24 @@
+
+<% if @material.persisted? %>
+  // Добавляем материал в список
+  var materialsList = document.getElementById('materials-list');
+  var newMaterial = document.createElement('p');
+  newMaterial.textContent = '<%= j @material.name %>';
+  var deleteLink = document.createElement('a');
+  deleteLink.href = '#';
+  deleteLink.textContent = 'Удалить';
+  deleteLink.classList.add('delete-material-link');
+  deleteLink.dataset.materialId = '<%= @material.id %>';
+  newMaterial.appendChild(deleteLink);
+  materialsList.appendChild(newMaterial);
+
+  // Очищаем поля формы
+  document.getElementById('material-form').reset();
+  
+  // Закрываем модальное окно
+  var addMaterialModal = document.getElementById('addMaterialModal');
+  addMaterialModal.style.display = 'none';
+<% else %>
+  // Обработка ошибки при создании материала
+  console.error('Ошибка при создании материала');
+<% end %>

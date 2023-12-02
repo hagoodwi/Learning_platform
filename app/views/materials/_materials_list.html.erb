@@ -1,0 +1,10 @@
+<% if materials.any? %>
+  <% materials.each do |material| %>
+    <p>
+      <%= link_to material.name, discipline_material_path(discipline, material) %>
+      <a href="#" class="delete-material-link" data-material-id="<%= material.id %>">Удалить</a>
+    </p>
+  <% end %>
+<% else %>
+  <p>Нет доступных материалов.</p>
+<% end %>

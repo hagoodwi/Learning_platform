@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
     end
   end
-  resources :groups do
 
   resources :users, only: [:edit, :update, :show]
   resources :groups
