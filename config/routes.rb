@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   resources :disciplines do
     resources :materials, only: [:new, :create, :show, :index]
     member do
-      get 'download'
       post 'attach_materials', to: 'disciplines#attach_materials', as: :attach_materials
       delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
     end
