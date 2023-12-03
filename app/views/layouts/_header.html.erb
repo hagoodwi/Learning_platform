@@ -9,6 +9,9 @@
           <% if current_user&.has_role?('admin') %>
             <li><%= link_to "Администрирование", admin_users_path, class: "nav-link px-2 text-#{nav_active("/admin")}" %></li>
           <% end %>
+          <% if current_user&.has_role?('moderator') %>
+            <li><%= link_to "Модерирование", moderator_courses_path, class: "nav-link px-2 text-#{nav_active("/moderator")}" %></li>
+          <% end %>
         </ul>
 
         <div class="navbar-right">

@@ -26,7 +26,7 @@
         <td><%= label_tag "#{role.users.length}" %></td>
         <td>
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <% if %w[admin teacher student].include?(role.name) %>
+            <% if %w[admin teacher student moderator].include?(role.name) %>
               <%= button_to 'Delete', admin_role_path(role), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm", disabled: true %>
             <% else %>
               <%= button_to 'Delete', admin_role_path(role), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>

@@ -1,0 +1,15 @@
+<div class="nav-scroller bg-body shadow-sm">
+    <nav class="nav" aria-label="Secondary navigation">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"> 
+                <%= link_to "Курсы", moderator_courses_path, class: "nav-link #{path_start_with_active("/moderator/course")}" %> 
+            </li>
+            <li class="nav-item"> 
+                <%= link_to "Дисциплины", moderator_disciplines_path, class: "nav-link #{path_start_with_active("/moderator/discipline")}" %> 
+            </li>
+            <li class="nav-item"> 
+                <%= link_to "Материалы", "#", class: "nav-link #{path_start_with_active("/moderator/material")}" %> 
+            </li>
+        </ul>
+    </nav>
+</div>

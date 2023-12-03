@@ -24,6 +24,25 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :moderator do
+    resources :courses do
+      member do
+        get 'teachers' => 'courses#edit_teachers'
+        patch 'teachers' => 'courses#update_teachers'
+        get 'students' => 'courses#edit_students'
+        patch 'students' => 'courses#update_students'
+      end
+    end
+
+    resources :disciplines do
+      resources :materials, only: [:new, :create, :show, :index]
+      member do
+        post 'attach_materials', to: 'disciplines#attach_materials', as: :attach_materials
+        delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
+      end
+    end
+  end
+
   namespace :admin do
     resources :users, only: [:index, :show, :edit, :update] do
       # member do
