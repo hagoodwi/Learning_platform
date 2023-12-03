@@ -2,7 +2,62 @@
 
 <p><strong>Дата добавления:</strong> <%= @material.created_at.to_date %></p>
 <p><strong>Дисциплина:</strong> <%= @material.discipline.name %></p>
+<p><strong>Доступ:</strong>
+  <% if @material.material_access && @material.material_access.always_open %>
+    Доступно всем
+  <% elsif @material.material_access %>
+    С <%= @material.material_access.start_time %> по <%= @material.material_access.end_time %>
+  <% else %>
+    Нет информации о доступности
+  <% end %>
+</p>
 
 <%= link_to 'Скачать', rails_blob_path(@material.file, disposition: "attachment") %>
 
-<%= link_to 'Назад к списку материалов', discipline_materials_path(@material.discipline) %>
+<!-- Добавляем ссылку для открытия модального окна редактирования доступности -->
+<%= link_to 'Редактировать доступность', '#', id: 'editAccessLink', data: { material_id: @material.id }, remote: true %>
+
+
+<!-- Модальное окно для редактирования доступности -->
+<div id="editAccessModal" style="display: none;">
+  <%= render partial: 'materials/edit_access_modal', locals: { material: @material } %>
+</div>
+
+<!-- Добавляем JavaScript для управления модальным окном -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var editAccessLink = document.getElementById('editAccessLink');
+    var editAccessModal = document.getElementById('editAccessModal');
+
+    editAccessLink.addEventListener('click', function() {
+      editAccessModal.style.display = 'block';
+    });
+  });
+    function updateMaterialAccess(materialId) {
+    var alwaysOpenCheckbox = document.getElementById('always_open');
+    var startTimeInput = document.getElementById('start_time');
+    var endTimeInput = document.getElementById('end_time');
+
+    var formData = new FormData();
+    formData.append('always_open', alwaysOpenCheckbox.checked);
+    formData.append('start_time', startTimeInput.value);
+    formData.append('end_time', endTimeInput.value);
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch(`/materials/${materialId}/update_access`, {
+        method: 'PATCH',
+        headers: {
+        'X-CSRF-Token': csrfToken
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Обновить что-то на странице, если нужно
+        console.log('Доступность материала обновлена:', data);
+    })
+    .catch(error => console.error('Ошибка при обновлении доступности материала:', error));
+    }
+
+</script>

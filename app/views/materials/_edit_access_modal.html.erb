@@ -1,0 +1,26 @@
+<!-- materials/_edit_access_modal.html.erb -->
+<div id="editAccessModalContent">
+  <%= form_with(model: @material_access, url:  update_access_discipline_material_path(@material.discipline, @material), method: :patch) do |form| %>
+
+    <div>
+      <%= form.label :always_open, 'Всегда доступен' %>
+      <%= form.check_box :always_open %>
+    </div>
+
+    <div id="period-fields" style="<%= @material_access.always_open ? 'display: none;' : '' %>">
+      <div>
+        <%= form.label :start_time, 'Время открытия' %>
+        <%= form.datetime_local_field :start_time %>
+      </div>
+
+      <div>
+        <%= form.label :end_time, 'Время закрытия' %>
+        <%= form.datetime_local_field :end_time %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.submit 'Сохранить доступность материала' %>
+    </div>
+  <% end %>
+</div>
