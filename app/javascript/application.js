@@ -5,3 +5,50 @@ import * as bootstrap from "bootstrap"
 
 // import Rails from "@rails/ujs"
 // Rails.start()
+
+document.addEventListener('DOMContentLoaded', function() {
+    var addMaterialLink = document.getElementById('addMaterialLink');
+    var addMaterialModal = document.getElementById('addMaterialModal');
+
+    addMaterialLink.addEventListener('click', function() {
+      addMaterialModal.style.display = 'block';
+    });
+
+    // Close the modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+      if (event.target == addMaterialModal) {
+        addMaterialModal.style.display = 'none';
+      }
+    });
+
+    // Handle material deletion
+    var deleteMaterialLinks = document.querySelectorAll('.delete-material-link');
+    deleteMaterialLinks.forEach(function(link) {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        var materialId = link.getAttribute('data-material-id');
+        deleteMaterial(materialId);
+      });
+    });
+
+    function deleteMaterial(materialId) {
+      // Получение CSRF-токена
+      var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      // Выполнение асинхронного запроса для удаления материала
+      var xhr = new XMLHttpRequest();
+      xhr.open('DELETE', `/disciplines/<%= @discipline.id %>/detach_material/${materialId}`, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+      xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 204) {
+          console.log('Материал успешно удален');
+          // Перезагрузка страницы после успешного удаления
+          location.reload();
+        } else {
+          console.error('Ошибка при удалении материала');
+        }
+      };
+      xhr.send();
+    }
+  });

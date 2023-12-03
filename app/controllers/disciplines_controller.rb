@@ -64,6 +64,6 @@ class DisciplinesController < ApplicationController
     end
   
     def discipline_params
-      params.require(:discipline).permit(:name, material_ids: [])
+      params.require(:discipline).permit(:name, :description, material_ids: [])
     end
   end

@@ -4,7 +4,7 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><%= link_to "Главная", root_path, class: "nav-link px-2 text-#{nav_active("/catalog")}" %></li>
-          <li><%= link_to "Дисциплины", '#', class: "nav-link px-2 text-white" %></li>
+          <li><%= link_to "Дисциплины", disciplines_path, class: "nav-link px-2 text-#{nav_active("/discipline")}" %></li>
           <li><%= link_to "Курсы", courses_path, class: "nav-link px-2 text-#{nav_active("/course")}" %></li>
           <% if current_user&.has_role?('admin') %>
             <li><%= link_to "Администрирование", admin_users_path, class: "nav-link px-2 text-#{nav_active("/admin")}" %></li>

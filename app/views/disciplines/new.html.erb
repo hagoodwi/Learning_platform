@@ -1,14 +1,22 @@
-<h1>Новая дисциплина</h1>
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Создание дисциплины</h3>
+    <div class="text-end">
+      <%= button_to 'Отмена', disciplines_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
 
-<%= form_with(model: @discipline, local: true) do |form| %>
-    <div>
-      <%= form.label :name, 'Название дисциплины' %>
-      <%= form.text_field :name %>
+  <%= form_with(model: @discipline, local: true) do |f| %>
+    <div class="form-floating">
+      <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Название", for: "floatingInput", class: "form-label" %>
+    </div>
+
+    <div class="form-floating">
+      <%= f.text_field :description, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Описание", for: "floatingInput", class: "form-label" %>
     </div>
     
-    <div>
-      <%= form.submit 'Сохранить' %>
-    </div>
+    <%= f.submit 'Создать', class: "btn btn-primary w-100 py-2" %>
   <% end %>
-
-<%= link_to 'Назад к списку', disciplines_path %>
+</div>

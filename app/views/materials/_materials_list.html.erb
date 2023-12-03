@@ -1,10 +1,26 @@
 <% if materials.any? %>
-  <% materials.each do |material| %>
-    <p>
-      <%= link_to material.name, discipline_material_path(discipline, material) %>
-      <a href="#" class="delete-material-link" data-material-id="<%= material.id %>">Удалить</a>
-    </p>
-  <% end %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Материалы</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% materials.each do |material| %>
+        <tr>
+          <td><%= label_tag "#{material.name}" %></td>
+          <td>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <%= link_to 'Download', rails_blob_path(material.file, disposition: "attachment"), class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Delete', "#", data: { "material-id": material.id}, class: "delete-material-link btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Show', discipline_material_path(material), class: "btn btn-outline-secondary btn-sm" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <p>Нет доступных материалов.</p>
+  <p class="lead alert alert-info"> Нет доступных материалов </p>
 <% end %>
