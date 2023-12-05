@@ -38,12 +38,14 @@
     <!-- Add the JavaScript to handle the modal -->
     <%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
 
-    <div id="addMaterialModal" style="display: none;">
-    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
-    </div>
+    
     
     <div>
       <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
     </div>
   <% end %>
+
+  <div id="addMaterialModal" style="display: none;">
+    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
+    </div>
 </div>

@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var addMaterialLink = document.getElementById('addMaterialLink');
     var addMaterialModal = document.getElementById('addMaterialModal');
 
-    addMaterialLink.addEventListener('click', function() {
+    addMaterialLink.addEventListener('click', function(event) {
+      event.preventDefault();
       addMaterialModal.style.display = 'block';
     });
 
@@ -27,17 +28,18 @@ document.addEventListener('DOMContentLoaded', function() {
       link.addEventListener('click', function(event) {
         event.preventDefault();
         var materialId = link.getAttribute('data-material-id');
-        deleteMaterial(materialId);
+        var disciplineId = link.getAttribute('data-discipline-id');
+        deleteMaterial(materialId, disciplineId);
       });
     });
 
-    function deleteMaterial(materialId) {
+    function deleteMaterial(materialId, disciplineId) {
       // Получение CSRF-токена
       var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
       // Выполнение асинхронного запроса для удаления материала
       var xhr = new XMLHttpRequest();
-      xhr.open('DELETE', `/disciplines/<%= @discipline.id %>/detach_material/${materialId}`, true);
+      xhr.open('DELETE', `/disciplines/${disciplineId}/detach_material/${materialId}`, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('X-CSRF-Token', csrfToken);
       xhr.onload = function() {

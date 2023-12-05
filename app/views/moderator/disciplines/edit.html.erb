@@ -20,9 +20,8 @@
     <div>
       <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
     </div>
-
-    <div id="addMaterialModal" style="display: none;">
-    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
-    </div>
   <% end %>
-</div>
+
+
+    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
+  </div>
