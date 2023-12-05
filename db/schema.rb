@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_03_173724) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -64,6 +64,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_disciplines_on_name", unique: true
+  end
+
+  create_table "disciplines_role_users", force: :cascade do |t|
+    t.integer "role_user_id", null: false
+    t.integer "discipline_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discipline_id"], name: "index_disciplines_role_users_on_discipline_id"
+    t.index ["role_user_id"], name: "index_disciplines_role_users_on_role_user_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -142,6 +151,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_205009) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "courses_role_users", "courses"
   add_foreign_key "courses_role_users", "role_users"
+  add_foreign_key "disciplines_role_users", "disciplines"
+  add_foreign_key "disciplines_role_users", "role_users"
   add_foreign_key "groups_users", "groups"
   add_foreign_key "groups_users", "users"
   add_foreign_key "material_accesses", "materials"

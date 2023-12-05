@@ -1,0 +1,28 @@
+<%= render "moderator/shared/nav" %>
+  
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Редактирование</h3>
+    <div class="text-end">
+      <%= button_to 'Отмена', @discipline, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+
+  <%= form_with(model: @discipline, url: moderator_discipline_path, local: true) do |f| %>
+    <div class="form-floating">
+      <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Название", for: "floatingInput", class: "form-label" %>
+    </div>
+
+    <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
+    <%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
+
+    <div>
+      <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
+    </div>
+
+    <div id="addMaterialModal" style="display: none;">
+    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
+    </div>
+  <% end %>
+</div>

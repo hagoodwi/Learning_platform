@@ -4,7 +4,7 @@
   <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
     <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Дисциплины</h3>
     <div class="text-end">
-      <%= button_to '+ Создать', new_discipline_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+      <%= button_to '+ Создать', new_moderator_discipline_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
     </div>
   </div>
 
@@ -23,9 +23,9 @@
           <td><%= label_tag "#{discipline.materials.length}" %></td>
           <td>
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-              <%= link_to 'Edit', edit_discipline_path(discipline), class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Delete', discipline, data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Show', discipline, class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Edit', edit_moderator_discipline_path(discipline), class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Delete', moderator_discipline_path(discipline), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Show', moderator_discipline_path(discipline), class: "btn btn-outline-secondary btn-sm" %>
             </div>
           </td>
         </tr>

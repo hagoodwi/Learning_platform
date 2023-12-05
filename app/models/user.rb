@@ -24,6 +24,10 @@ class User < ApplicationRecord
     self.roles.exists?(name: role_name)
   end
 
+  def get_role_user(role_name)
+    RoleUser.joins(:role).find_by(user_id: self.id, roles: { name: role_name })
+  end
+
   private
     def assign_user_role
       user_role = Role.find_or_create_by(name: "student")
