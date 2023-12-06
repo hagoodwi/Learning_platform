@@ -48,7 +48,7 @@ class DisciplinesController < ApplicationController
         @discipline.materials.destroy_all
         @discipline.destroy
         redirect_to disciplines_path, notice: 'Дисциплина успешно удалена!'
-      end
+    end
   
     def detach_material
       @discipline = Discipline.find(params[:id])

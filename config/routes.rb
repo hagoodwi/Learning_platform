@@ -6,13 +6,15 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations'}
 
   resources :disciplines do
-    resources :materials, only: [:new, :create, :show, :index]
+    resources :materials, only: [:new, :create, :index, :show] do
+      member do
+        patch 'update_access', to: 'materials#update_access', as: :update_access
+      end
+    end  
     member do
-      post 'attach_materials', to: 'disciplines#attach_materials', as: :attach_materials
       delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
     end
   end
-
   resources :users, only: [:edit, :update, :show]
   resources :groups
   resources :courses do

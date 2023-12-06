@@ -1,51 +1,67 @@
-  <h1>Редактировать дисциплину</h1>
+<h1>Редактировать дисциплину</h1>
 
-  <%= form_with(model: @discipline, local: true) do |form| %>
-    <div>
-      <%= form.label :name, 'Название дисциплины' %>
-      <%= form.text_field :name %>
-    </div>
-    <h3>Список материалов:</h3>
-    <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
-    <!-- Add the JavaScript to handle the modal -->
-    <%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
-    <div>
-      <%= form.submit 'Сохранить' %>
-    </div>
-  <% end %>
-
-  <div id="addMaterialModal" style="display: none;">
-    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
-  </div>
-
-
-<div class="my-3 p-3 bg-body rounded shadow-sm">
-  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
-    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Редактирование</h3>
-    <div class="text-end">
-      <%= button_to 'Отмена', @discipline, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
-    </div>
-  </div>
-
-  <%= form_with(model: @discipline, local: true) do |f| %>
-    <div class="form-floating">
-      <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
-      <%= f.label "Название", for: "floatingInput", class: "form-label" %>
-    </div>
-
-    <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
-    
-    <!-- Add the JavaScript to handle the modal -->
-    <%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
-
-    
-    
-    <div>
-      <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
-    </div>
-  <% end %>
-
-  <div id="addMaterialModal" style="display: none;">
-    <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
-    </div>
+<%= form_with(model: @discipline, local: true) do |form| %>
+<div>
+    <%= form.label :name, 'Название дисциплины' %>
+    <%= form.text_field :name %>
 </div>
+<h3>Список материалов:</h3>
+<%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
+<!-- Add the JavaScript to handle the modal -->
+<%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
+<div>
+    <%= form.submit 'Сохранить' %>
+</div>
+<% end %>
+
+<div id="addMaterialModal" style="display: none;">
+<%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
+</div>
+
+<!-- Add the JavaScript to handle the modal -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
+        $('#addMaterialLink').on('click', function() {
+          $('#addMaterialModal').css('display', 'block');
+        });
+    });
+
+// Handle material deletion
+$(document).on('click', '.delete-material-link', function(event) {
+  event.preventDefault();
+  var materialId = $(this).data('material-id');
+  deleteMaterial(materialId);
+});
+
+$(document).on('click', '.delete-material-link', function (event) {
+    event.preventDefault();
+    var materialId = $(this).data('material-id');
+    deleteMaterial(materialId);
+  });
+
+  function deleteMaterial(materialId) {
+    // Get CSRF token
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    // Perform asynchronous request to delete material
+    $.ajax({
+      url: `/disciplines/<%= @discipline.id %>/detach_material/${materialId}`,
+      type: 'DELETE',
+      dataType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
+      },
+      success: function () {
+        console.log('Материал успешно удален');
+        // Reload the page after successful deletion
+        location.reload();
+      },
+      error: function () {
+        console.error('Ошибка при удалении материала');
+      }
+    });
+  }
+});
+</script>

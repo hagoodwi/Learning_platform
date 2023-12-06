@@ -14,7 +14,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <%= link_to 'Download', rails_blob_path(material.file, disposition: "attachment"), class: "btn btn-outline-secondary btn-sm" %>
               <%= link_to 'Delete', "#", data: { "material-id": material.id, "discipline-id": @discipline.id}, class: "delete-material-link btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Show', discipline_material_path(material), class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Show', discipline_material_path(discipline, material), class: "btn btn-outline-secondary btn-sm" %>
             </div>
           </td>
         </tr>
