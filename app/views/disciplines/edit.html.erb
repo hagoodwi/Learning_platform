@@ -21,49 +21,47 @@
 <!-- Add the JavaScript to handle the modal -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var addMaterialLink = document.getElementById('addMaterialLink');
-    var addMaterialModal = document.getElementById('addMaterialModal');
-
-    addMaterialLink.addEventListener('click', function() {
-    addMaterialModal.style.display = 'block';
+    $(document).ready(function() {
+        $('#addMaterialLink').on('click', function() {
+          $('#addMaterialModal').css('display', 'block');
+        });
     });
 
-    // Close the modal when clicking outside of it
-    window.addEventListener('click', function(event) {
-    if (event.target == addMaterialModal) {
-        addMaterialModal.style.display = 'none';
-    }
-    });
+// Handle material deletion
+$(document).on('click', '.delete-material-link', function(event) {
+  event.preventDefault();
+  var materialId = $(this).data('material-id');
+  deleteMaterial(materialId);
+});
 
-    // Handle material deletion
-    var deleteMaterialLinks = document.querySelectorAll('.delete-material-link');
-    deleteMaterialLinks.forEach(function(link) {
-    link.addEventListener('click', function(event) {
-        event.preventDefault();
-        var materialId = link.getAttribute('data-material-id');
-        deleteMaterial(materialId);
-    });
-    });
+$(document).on('click', '.delete-material-link', function (event) {
+    event.preventDefault();
+    var materialId = $(this).data('material-id');
+    deleteMaterial(materialId);
+  });
 
-    function deleteMaterial(materialId) {
-    // Получение CSRF-токена
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  function deleteMaterial(materialId) {
+    // Get CSRF token
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    // Выполнение асинхронного запроса для удаления материала
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', `/disciplines/<%= @discipline.id %>/detach_material/${materialId}`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-    xhr.onload = function() {
-        if (xhr.status === 200 || xhr.status === 204) {
+    // Perform asynchronous request to delete material
+    $.ajax({
+      url: `/disciplines/<%= @discipline.id %>/detach_material/${materialId}`,
+      type: 'DELETE',
+      dataType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
+      },
+      success: function () {
         console.log('Материал успешно удален');
-        // Перезагрузка страницы после успешного удаления
+        // Reload the page after successful deletion
         location.reload();
-        } else {
+      },
+      error: function () {
         console.error('Ошибка при удалении материала');
-        }
-    };
-    xhr.send();
-    }
+      }
+    });
+  }
 });
 </script>

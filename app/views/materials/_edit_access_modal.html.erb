@@ -7,7 +7,7 @@
       <%= form.check_box :always_open %>
     </div>
 
-    <div id="period-fields" style="<%= @material_access.always_open ? 'display: none;' : '' %>">
+    <div id="period-fields">
       <div>
         <%= form.label :start_time, 'Время открытия' %>
         <%= form.datetime_local_field :start_time %>
