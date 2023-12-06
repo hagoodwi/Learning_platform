@@ -71,7 +71,6 @@ class Moderator::DisciplinesController < ModeratorController
 
       def check_access_to_discipline
         @discipline = Discipline.find(params[:id])
-        # Еще проверка, что админ
         redirect_to root_path, alert: 'Доступ запрещен' unless @discipline.role_users.exists?(user_id: current_user.id, role_id: Role.find_by(name: 'moderator')&.id) || @is_admin
       end
     

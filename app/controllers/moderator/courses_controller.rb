@@ -1,10 +1,15 @@
 class Moderator::CoursesController < ModeratorController
+    before_action :check_access_to_discipline, only: [:show, :edit, :update, :destroy]
+
     def index
-        @courses = Course.all
+        if current_user.has_role?('admin')
+            @courses = Course.all
+        else
+            @courses = Course.joins(role_users: :role).where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
+        end
     end
 
     def show
-        @course = Course.find(params[:id])
         @teachers = RoleUser.joins(:role, :courses).where(roles: { name: 'teacher'}, courses: { id: params[:id] })
         @students = RoleUser.joins(:role, :courses).where(roles: { name: 'student'}, courses: { id: params[:id] })
         # Здесь еще всяких преподов, участников, материалы и прочее
@@ -48,10 +53,14 @@ class Moderator::CoursesController < ModeratorController
     def create
         @course = Course.new(course_params)
         if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
-            redirect_to request.referer, alert: "Неверная указаны сроки проведения"
+            redirect_to request.referer, alert: "Неверны указаны сроки проведения"
             return
         end
         if @course.save
+            moderator = current_user.get_role_user('moderator')
+            if !moderator.nil?
+                @course.role_users << moderator
+            end
             redirect_to moderator_course_path(@course), notice: "Курс создан"
         else
             redirect_to request.referer, alert: "Произошла ошибка"
@@ -59,11 +68,9 @@ class Moderator::CoursesController < ModeratorController
     end
 
     def edit
-        @course = Course.find(params[:id])
     end
 
     def update
-        @course = Course.find(params[:id])
         if @course.update(course_params)
             redirect_to moderator_course_path(@course)
         else
@@ -110,13 +117,17 @@ class Moderator::CoursesController < ModeratorController
     end
 
     def destroy
-        @course = Course.find(params[:id])
         @course.destroy
         redirect_to moderator_courses_path
     end
     
 
     private
+        def check_access_to_discipline
+            @course = Course.find(params[:id])
+            redirect_to root_path, alert: 'Доступ запрещен' unless @course.role_users.exists?(user_id: current_user.id, role_id: Role.find_by(name: 'moderator')&.id) || @is_admin
+        end
+
         def course_params
             params.require(:course).permit(:name, :start_date, :end_date, :description, :teacher_role_users, :student_role_users)
         end
