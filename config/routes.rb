@@ -31,9 +31,10 @@ Rails.application.routes.draw do
         patch 'teachers' => 'courses#update_teachers'
         get 'students' => 'courses#edit_students'
         patch 'students' => 'courses#update_students'
+        get 'disciplines' => 'courses#edit_disciplines'
+        patch 'disciplines' => 'courses#update_disciplines'
       end
     end
-
     resources :disciplines do
       resources :materials, only: [:new, :create, :show, :index]
       member do

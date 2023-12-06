@@ -1,14 +1,10 @@
 # controllers/disciplines_controller.rb
 class DisciplinesController < ApplicationController
-    before_action :check_access_to_discipline, only: [:show, :edit, :update, :destroy]
+    before_action :set_discipline, only: [:show, :edit, :update, :destroy]
     respond_to :js, only: [:create]
   
     def index
-      if current_user.has_role?('admin')
-        @disciplines = Discipline.all
-      else
-        @disciplines = Discipline.joins(role_users: :role).where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
-      end
+      @disciplines = Discipline.all
     end
   
     def new
@@ -65,12 +61,6 @@ class DisciplinesController < ApplicationController
     end
   
     private
-
-      def check_access_to_discipline
-        @discipline = Discipline.find(params[:id])
-        # Еще проверка, что админ
-        redirect_to root_path, alert: 'Доступ запрещен' unless @discipline.role_users.exists?(user_id: current_user.id, role_id: Role.find_by(name: 'moderator')&.id)
-      end
 
       def set_discipline
         @discipline = Discipline.find(params[:id])

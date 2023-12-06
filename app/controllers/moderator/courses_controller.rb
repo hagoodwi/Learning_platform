@@ -1,5 +1,6 @@
 class Moderator::CoursesController < ModeratorController
-    before_action :check_access_to_discipline, only: [:show, :edit, :update, :destroy]
+    before_action :check_access_to_discipline, 
+            only: [:show, :edit, :update, :destroy, :edit_teachers, :update_teachers, :edit_students, :update_students, :edit_disciplines, :update_disciplines]
 
     def index
         if current_user.has_role?('admin')
@@ -10,41 +11,11 @@ class Moderator::CoursesController < ModeratorController
     end
 
     def show
+        @disciplines = @course.disciplines
         @teachers = RoleUser.joins(:role, :courses).where(roles: { name: 'teacher'}, courses: { id: params[:id] })
         @students = RoleUser.joins(:role, :courses).where(roles: { name: 'student'}, courses: { id: params[:id] })
         # Здесь еще всяких преподов, участников, материалы и прочее
     end
-
-    # def new
-    #     @course = Course.new
-    #     @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    #     @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
-    #     # @teacher_user =  User.joins(:roles).where(roles: { name: 'teacher' })
-    #     # @student_user =  User.joins(:roles).where(roles: { name: 'student' })
-    #     # Здесь еще всяких преподов, участников, материалы и прочее
-    # end
-
-    # def create
-    #     @course = Course.new(course_params)
-    #     if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
-    #         @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    #         @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
-    #         render 'new', notice: "Произошла ошибка"
-    #         return
-    #     end
-        
-    #     if @course.save
-    #         if params[:course][:teacher_role_user].present?
-    #             @course.role_user_ids = params[:course][:teacher_role_user]
-    #         end
-    #         if params[:course][:student_role_user].present?
-    #             @course.role_user_ids = params[:course][:student_role_user]
-    #         end
-    #         redirect_to @course, notice: "Курс создан"
-    #     else
-    #         render 'new', notice: "Произошла ошибка"
-    #     end
-    # end
 
     def new
         @course = Course.new
@@ -79,12 +50,10 @@ class Moderator::CoursesController < ModeratorController
     end
 
     def edit_teachers
-        @course = Course.find(params[:id])
         @teacher_role_users = RoleUser.joins(:role).where(roles: { name: 'teacher' })
     end
 
     def update_teachers
-        @course = Course.find(params[:id])
         other_users = RoleUser.joins(:role, :courses).where.
             not(roles: { name: 'teacher'}).where( courses: { id: params[:id] }).ids
 
@@ -94,16 +63,15 @@ class Moderator::CoursesController < ModeratorController
         end
 
         @course.role_user_ids = merged_ids
-        redirect_to @course
+        redirect_to moderator_course_path(@course)
     end
 
     def edit_students
-        @course = Course.find(params[:id])
         @student_role_users = RoleUser.joins(:role).where(roles: { name: 'student' })
     end
 
     def update_students
-        @course = Course.find(params[:id])
+        # Можно оптимизировать
         other_users = RoleUser.joins(:role, :courses).where.
             not(roles: { name: 'student'}).where( courses: { id: params[:id] }).ids
         
@@ -113,7 +81,19 @@ class Moderator::CoursesController < ModeratorController
         end
 
         @course.role_user_ids = merged_ids
-        redirect_to @course
+        redirect_to moderator_course_path(@course)
+    end
+
+    def edit_disciplines
+        @disciplines = Discipline.all
+    end
+
+    def update_disciplines
+        params[:course][:discipline_ids].each do |discipline_id|
+            discipline = Discipline.find(discipline_id)
+            @course.course_disciplines.find_or_create_by(discipline: discipline)
+        end
+        redirect_to moderator_course_path(@course)
     end
 
     def destroy
@@ -129,6 +109,39 @@ class Moderator::CoursesController < ModeratorController
         end
 
         def course_params
-            params.require(:course).permit(:name, :start_date, :end_date, :description, :teacher_role_users, :student_role_users)
+            params.require(:course).permit(:name, :start_date, :end_date, :description, :teacher_role_users, :student_role_users, :discipline_ids)
         end
 end
+
+
+
+# def new
+    #     @course = Course.new
+    #     @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
+    #     @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
+    #     # @teacher_user =  User.joins(:roles).where(roles: { name: 'teacher' })
+    #     # @student_user =  User.joins(:roles).where(roles: { name: 'student' })
+    #     # Здесь еще всяких преподов, участников, материалы и прочее
+    # end
+
+    # def create
+    #     @course = Course.new(course_params)
+    #     if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
+    #         @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
+    #         @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
+    #         render 'new', notice: "Произошла ошибка"
+    #         return
+    #     end
+        
+    #     if @course.save
+    #         if params[:course][:teacher_role_user].present?
+    #             @course.role_user_ids = params[:course][:teacher_role_user]
+    #         end
+    #         if params[:course][:student_role_user].present?
+    #             @course.role_user_ids = params[:course][:student_role_user]
+    #         end
+    #         redirect_to @course, notice: "Курс создан"
+    #     else
+    #         render 'new', notice: "Произошла ошибка"
+    #     end
+    # end

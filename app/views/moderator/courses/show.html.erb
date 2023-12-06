@@ -13,36 +13,72 @@
   </div>
 </div>
 
-<div class="my-3 p-3 bg-body rounded shadow-sm">
-  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
-    <h5 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Список преподавателей</h5>
-    <div class="text-end">
-      <%= button_to '+ Добавить', teachers_moderator_course_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+<div class="row">
+  <div class="col-md-6">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+      <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+        <h5 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Список преподавателей</h5>
+        <div class="text-end">
+          <%= button_to '+ Добавить', teachers_moderator_course_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+
+      <% if @teachers.empty? %>
+        <p class="lead alert alert-info my-2 "> На курс пока что не добавлены учителя </p>
+      <% else %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Фамилия</th>
+              <th scope="col">Имя</th>
+              <th scope="col">Отчество</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @teachers.each do |role_user| %>
+              <tr>
+                <td><%= label_tag "#{role_user.user.user_profile.last_name}" %></td>
+                <td><%= label_tag "#{role_user.user.user_profile.first_name}" %></td>
+                <td><%= label_tag "#{role_user.user.user_profile.second_name}" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %> 
     </div>
   </div>
 
-  <% if @teachers.empty? %>
-    <p class="lead my-2"> На курс пока что не добавлены учителя </p>
-  <% else %>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Фамилия</th>
-          <th scope="col">Имя</th>
-          <th scope="col">Отчество</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @teachers.each do |role_user| %>
-          <tr>
-            <td><%= label_tag "#{role_user.user.user_profile.last_name}" %></td>
-            <td><%= label_tag "#{role_user.user.user_profile.first_name}" %></td>
-            <td><%= label_tag "#{role_user.user.user_profile.second_name}" %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% end %> 
+  <div class="col-md-6">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+      <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+        <h5 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Дисциплины на курсе</h5>
+        <div class="text-end">
+          <%= button_to '+ Добавить', disciplines_moderator_course_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+
+      <% if @disciplines.empty? %>
+        <p class="lead my-2 alert alert-info"> На курс пока что не добавлены дисциплины </p>
+      <% else %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Название</th>
+              <th scope="col">Материалы</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @disciplines.each do |discipline| %>
+              <tr>
+                <td><%= label_tag "#{discipline.name}" %></td>
+                <td><%= label_tag "#{discipline.materials.length}" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %> 
+    </div>
+  </div>
 </div>
 
 <div class="my-3 p-3 bg-body rounded shadow-sm">
@@ -54,7 +90,7 @@
   </div>
 
   <% if @students.empty? %>
-    <p class="lead"> На курс пока что не добавлены студенты </p>
+    <p class="lead alert alert-info">"> На курс пока что не добавлены студенты </p>
   <% else %>
     <table class="table table-striped">
       <thead>

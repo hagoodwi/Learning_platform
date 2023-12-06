@@ -4,11 +4,11 @@
   <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
     <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto"><%= @course.name %></h3>
     <div class="text-end">
-      <%= button_to 'Отмена', @course, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+      <%= button_to 'Отмена', moderator_course_path(@course), :method => :get, type: "button", class: "btn btn-outline-secondary" %>
     </div>
   </div>
 
-  <%= form_with url: "/courses/#{@course.id}/teachers", method: :patch do |f| %>
+  <%= form_with url: teachers_moderator_course_path, method: :patch do |f| %>
     <table class="table table-striped">
       <thead>
         <tr>

@@ -2,40 +2,39 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalStaticBackdropLabel">Добавление материала</h5>
+        <h3 class="modal-title mb-0 col-12 col-lg-auto me-lg-auto">Добавление материала</h3>
         <button type="button" class="btn-close" aria-label="Закрыть"></button>
       </div>
       <div class="modal-body">
         <%= form_with(model: Material.new, url: discipline_materials_path(@discipline), remote: true) do |form1| %>
-          <div>
-            <%= form1.label :name, 'Название материала' %>
-            <%= form1.text_field :name %>
+          <div class="my-1 form-floating">
+            <%= form1.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
+            <%= form1.label "Название материала", for: "floatingInput", class: "form-label" %>
           </div>
 
           <div>
-            <%= form1.label :file, 'Файл' %>
-            <%= form1.file_field :file %>
+            <%= form1.file_field :file, class: "form-control", id: "formFile", type: "file" %>
           </div>
 
-          <div>
-            <%= form1.label :visible_for_a_period, 'Видим на время' %>
-            <%= form1.check_box :visible_for_a_period %>
+          <div class="my-3 form-check">
+            <%= form1.label :visible_for_a_period, 'Видим на время', class: "form-check-label" %>
+            <%= form1.check_box :visible_for_a_period, class: "form-check-input", type: "checkbox" %>
           </div>
 
-          <div id="period-fields" style="display: none;">
-            <div>
-              <%= form1.label :start_time, 'Время открытия' %>
-              <%= form1.datetime_local_field :start_time %>
+          <div class="my-3", id="period-fields" style="display: none;">
+            <div class="form-floating">
+              <%= form1.datetime_local_field :start_time, class: "form-control", id: "floatingInput", placeholder: ""  %>
+              <%= form1.label "Время открытия", for: "floatingInput", class: "form-label" %>
             </div>
 
-            <div>
-              <%= form1.label :end_time, 'Время закрытия' %>
-              <%= form1.datetime_local_field :end_time %>
+            <div class="form-floating">
+              <%= form1.datetime_local_field :end_time, class: "form-control", id: "floatingInput", placeholder: ""  %>
+              <%= form1.label "Время закрытия", for: "floatingInput", class: "form-label" %>
             </div>
           </div>
 
-          <div>
-            <%= form1.submit 'Создать материал' %>
+          <div class="my-3">
+            <%= form1.submit 'Добавить материал', class: "btn btn-primary w-100 py-2" %>
           </div>
         <% end %>
       </div>
