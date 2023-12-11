@@ -38,9 +38,12 @@ Rails.application.routes.draw do
       end
     end
     resources :disciplines do
-      resources :materials, only: [:new, :create, :show, :index]
+      resources :materials, only: [:new, :create, :show, :index] do
+        member do
+          patch 'update_access', to: 'materials#update_access', as: :update_access
+        end
+      end  
       member do
-        post 'attach_materials', to: 'disciplines#attach_materials', as: :attach_materials
         delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
       end
     end

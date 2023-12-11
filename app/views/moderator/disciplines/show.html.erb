@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="lead my-2 pb-2 border-bottom">Описание: <%= @discipline.description %></div>
-  <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
+  <%= render partial: 'moderator/materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
 </div>
 
 <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>

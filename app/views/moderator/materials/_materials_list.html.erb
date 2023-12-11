@@ -1,0 +1,26 @@
+<% if materials.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Материалы</th>
+        <th scope="col"><%= link_to 'Добавить материал', '#', id: 'addMaterialLink', class: "btn btn-outline-secondary" %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% materials.each do |material| %>
+        <tr>
+          <td><%= label_tag "#{material.name}" %></td>
+          <td>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <%= link_to 'Download', rails_blob_path(material.file, disposition: "attachment"), class: "btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Delete', "#", data: { "material-id": material.id, "discipline-id": @discipline.id}, class: "delete-material-link btn btn-outline-secondary btn-sm" %>
+              <%= link_to 'Show', moderator_discipline_material_path(discipline, material), class: "btn btn-outline-secondary btn-sm" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="lead alert alert-info"> Нет доступных материалов </p>
+<% end %>
