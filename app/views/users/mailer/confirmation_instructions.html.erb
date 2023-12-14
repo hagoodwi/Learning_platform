@@ -1,0 +1,14 @@
+<p>Добро пожаловать, <%= @email %>!</p>
+
+<p>Для подтверждения регистрации пройдите по ссылке:</p>
+
+<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Создание курса</h3>
+    <div class="text-end">
+      <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), class: "btn btn-outline-secondary" %></p>
+    </div>
+  </div>
+</div>

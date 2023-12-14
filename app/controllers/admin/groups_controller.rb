@@ -4,7 +4,7 @@ class Admin::GroupsController < AdminController
     end
 
     def show
-        @group = Group.find(params[:id])
+        @group = Group.find_by!(id: params[:id])
         @users_in_group = @group.users
     end
 
