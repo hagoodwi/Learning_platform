@@ -1,0 +1,30 @@
+<div id="scheduleCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="86400000">
+  <div class="carousel-inner">
+    <% @schedules_by_day.each_with_index do |day, index| %>
+      <div class="carousel-item <%= 'active' if index == 0 %>">
+      <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
+      <h3 style="text-align: center;"><%= "#{months_in_russian[day[:date].month - 1]} #{day[:date].strftime('%d, %Y')}" %></h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Время</th>
+              <th>Дисциплины</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% day[:schedules].each do |schedule| %>
+            <tr>
+              <td><%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %></td>
+              <td>
+                <% course_discipline = CourseDiscipline.find(schedule.course_discipline_id) %>
+                <% discipline_name = Discipline.find(course_discipline.discipline_id).name %>
+                <%= discipline_name %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

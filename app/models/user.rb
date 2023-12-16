@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
   private
     def assign_user_role
-      user_role = Role.find_or_create_by(name: "student")
+      user_role = Role.find_or_create_by(name: "admin")
       self.roles << user_role
     end
 

@@ -1,0 +1,68 @@
+<h1><%= @course.name %> - Расписание</h1>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Выберите месяц:</span>
+  <input type="month" class="form-control" id="monthPicker" value="<%= Time.now.strftime('%Y-%m') %>">
+</div>
+<div class="carousel-container">
+<a class="carousel-control-prev" href="#scheduleCarousel" role="button" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Previous</span>
+</a>
+
+  <a class="carousel-control-next" href="#scheduleCarousel" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </a>
+</div>
+<div id="scheduleCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="86400000">
+  <div class="carousel-inner">
+    <% @schedules_by_day.each_with_index do |day, index| %>
+      <div class="carousel-item <%= 'active' if index == 0 %>">
+      <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
+      <h3 style="text-align: center;"><%= "#{months_in_russian[day[:date].month - 1]} #{day[:date].strftime('%d, %Y')}" %></h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Время</th>
+              <th>Дисциплины</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% day[:schedules].each do |schedule| %>
+            <tr>
+              <td><%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %></td>
+              <td>
+                <% course_discipline = CourseDiscipline.find(schedule.course_discipline_id) %>
+                <% discipline_name = Discipline.find(course_discipline.discipline_id).name %>
+                <%= discipline_name %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var monthPicker = document.getElementById('monthPicker');
+    monthPicker.addEventListener('change', function() {
+      var selectedDate = monthPicker.value;
+      loadCarousel(selectedDate);
+    });
+    function loadCarousel(selectedDate) {
+      var url = '<%= carousel_schedule_path(@course) %>';
+      var params = { selected_date: selectedDate };
+      console.log(url + '?' + new URLSearchParams(params));
+
+      fetch(url + '?' + new URLSearchParams(params))
+        .then(response => response.text())
+        .then(data => {
+          console.log(data);
+          document.getElementById('scheduleCarousel').outerHTML = data;})
+        .catch(error => console.error('Error:', error));
+    }
+  });
+</script>

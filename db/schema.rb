@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_06_152502) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_11_195031) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -142,6 +142,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_152502) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "schedules", force: :cascade do |t|
+    t.integer "course_discipline_id", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_discipline_id"], name: "index_schedules_on_course_discipline_id"
+  end
+
   create_table "user_profiles", force: :cascade do |t|
     t.string "first_name"
     t.string "second_name"
@@ -181,5 +190,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_152502) do
   add_foreign_key "materials", "disciplines"
   add_foreign_key "role_users", "roles"
   add_foreign_key "role_users", "users"
+  add_foreign_key "schedules", "course_disciplines"
   add_foreign_key "user_profiles", "users"
 end

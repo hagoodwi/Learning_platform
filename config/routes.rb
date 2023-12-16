@@ -15,6 +15,10 @@ Rails.application.routes.draw do
       delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
     end
   end
+  resources :schedules do
+    get 'load_disciplines', on: :collection
+    get 'carousel', on: :member
+  end
   resources :users, only: [:edit, :update, :show]
   resources :groups
   resources :courses do

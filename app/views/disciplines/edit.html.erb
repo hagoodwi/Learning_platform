@@ -7,8 +7,6 @@
 </div>
 <h3>Список материалов:</h3>
 <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
-<!-- Add the JavaScript to handle the modal -->
-<%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
 <div>
     <%= form.submit 'Сохранить' %>
 </div>
