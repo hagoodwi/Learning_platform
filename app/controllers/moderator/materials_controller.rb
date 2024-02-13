@@ -2,6 +2,8 @@ class Moderator::MaterialsController < ModeratorController
     before_action :check_access_to_discipline, 
             only: [:show, :edit, :update, :destroy]
 
+    # TODO: сделать еще в разделе модерирования подраздел с материалами для управления всеми материалами
+
     def new
         @material = @discipline.materials.build
         # @discipline = Discipline.find(params[:discipline_id])

@@ -1,5 +1,6 @@
 <%= render "admin/shared/nav" %>
 
+<!-- TODO: мб делать вывод не таблицей, а списком, как на странице просмотра всех пользователей -->
 <div class="my-3 p-3 bg-body rounded shadow-sm">
   <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
     <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Список групп</h3>
@@ -28,7 +29,7 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <%= link_to 'Редактировать', edit_admin_group_path(group), class: "dropdown-item" %>
-                <%= link_to 'Удалить', admin_group_path(group), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
+                <%= link_to 'Удалить', admin_group_path(group), data: { "turbo-method": :delete, confirm: 'Вы уверены?'}, class: "dropdown-item" %>
                 <%= link_to 'Просмотр', admin_group_path(group), class: "dropdown-item"%>
               </ul>
             </div>

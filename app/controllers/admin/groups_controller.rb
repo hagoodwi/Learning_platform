@@ -13,48 +13,39 @@ class Admin::GroupsController < AdminController
         @users = User.all
     end
 
-    # def create
-    #     @group = Group.new(group_params) 
-    #     if @group.save
-    #         if params[:group][:user_ids].present?
-    #             # @users_to_add = User.where(id: params[:group][:user_ids])
-    #             # @group.users << @users_to_add if @users_to_add.present?
-    #             @group.user_ids = params[:group][:user_ids]
-    #         end
-    #         redirect_to admin_group_path(@group)
-    #     else
-    #         render 'new'
-    #     end
-    # end
-
     def create
         @group = Group.new(group_params)
-        # debugger
-        if @group.save
-          # добавьте пользователей в группу
-          params[:user_ids].each do |user_id|
-            @group.users << User.find(user_id)
-          end
-          redirect_to admin_group_path(@group), notice: 'Группа успешно создана.'
-        else
-          render :new
+        Group.transaction do
+            if @group.save
+              @group.user_ids = params[:user_ids].reject(&:blank?) if params[:user_ids].present?
+              redirect_to admin_group_path(@group), notice: 'Группа успешно создана.'
+            else
+              render :new, status: :unprocessable_entity
+            end
         end
-      end
+    rescue ActiveRecord::RecordInvalid
+        render :new, status: :unprocessable_entity
+    end
 
     def edit
         @group = Group.find(params[:id])
         @users = User.all
     end
 
+
+    # TODO: Переделать обновление списка пользователей в группе (сделать как при создании)
     def update
         @group = Group.find(params[:id])
-        if @group.update(group_params)
-            @group.user_ids = params[:group][:user_ids]
-            flash[:notice] = "Группа обновлена"
-            redirect_to admin_group_path(@group)
-        else
-            render 'edit'
+        Group.transaction do
+            if @group.update(group_params)
+              @group.user_ids = Array.wrap(params[:group][:user_ids])
+              redirect_to admin_group_path(@group), notice: 'Группа успешно обновлена.'
+            else
+              render 'edit', status: :unprocessable_entity
+            end
         end
+    rescue ActiveRecord::RecordInvalid
+      render 'edit', status: :unprocessable_entity
     end
 
     def destroy
@@ -63,50 +54,8 @@ class Admin::GroupsController < AdminController
         redirect_to admin_groups_path, notice: "Группа была удалена"
     end
 
-    # def update_users
-    #     @group = Group.find(params[:id])
-    
-    #     # Обновляем список принадлежащих группе пользователей
-    #     @group.user_ids = params[:group][:user_ids]
-
-    #     flash[:notice] = "Группа успешно обновлена"
-    #     # Перенаправляем пользователя после сохранения изменений
-    #     redirect_to @group
-    # end
-
-    # def add_user
-    #     # debugger
-    #     @group = Group.find(params[:id])
-    #     @user = User.find(params[:user][:id])
-    #     @group.users << @user
-    
-        
-    #     redirect_to group_path(@group)
-    # end
-
-    # def add_users
-    #     @group = Group.find(params[:id])
-    #     @userss = User.where.not(id: @group.user_ids)
-
-    #     # debugger
-    
-    #     if params[:group][:user_ids].present?
-    #       @users_to_add = User.where(id: params[:group][:user_ids])
-    #       @group.users << @users_to_add if @users_to_add.present?
-    #     end
-    
-    #     redirect_to group_path(@group)
-    # end
-
-    # def del_user
-    #     @group = Group.find(params[:id])
-    #     @user = User.find()
-    # end
-
     private
-
         def group_params
             params.require(:group).permit(:name, :description, :user_ids)
         end
-    # debugger
 end

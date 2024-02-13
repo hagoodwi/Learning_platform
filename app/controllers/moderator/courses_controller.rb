@@ -1,10 +1,13 @@
 class Moderator::CoursesController < ModeratorController
+    # Проверка на то, что пользователь либо админ, либо модератор этого курса
     before_action :check_access_to_discipline, 
             only: [:show, :edit, :update, :destroy, :edit_teachers, :update_teachers, :edit_students, :update_students, :edit_disciplines, :update_disciplines]
 
     def index
+        # Если админ, то получаем все курсы 
         if current_user.has_role?('admin')
             @courses = Course.page(params[:page]).per(5)
+        # Иначе получаем только те, на которых являемся модератором
         else
             @courses = Course.joins(role_users: :role)
                                 .where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
@@ -12,33 +15,44 @@ class Moderator::CoursesController < ModeratorController
         end
     end
 
+    # На странице курсы выводим преподавателей, дисциплины, студентов
+    # TODO: переделать поиск преподавателей, так как они добавляются не на сам курс, а на дисциплину_на_курсе
+    #       к самому курсу привязаны только студенты и модераторы 
     def show
         @disciplines = @course.disciplines
         @teachers = RoleUser.joins(:role, :courses).where(roles: { name: 'teacher'}, courses: { id: params[:id] })
         @students = RoleUser.joins(:role, :courses).where(roles: { name: 'student'}, courses: { id: params[:id] })
-        # Здесь еще всяких преподов, участников, материалы и прочее
     end
 
     def new
         @course = Course.new
     end
 
+    # Создание курса (без добавления пользователей)
     def create
         @course = Course.new(course_params)
-        if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
-            redirect_to request.referer, alert: "Неверны указаны сроки проведения"
+
+        if !(@course.start_date.present? && @course.end_date.present? && @course.start_date <= @course.end_date)
+            redirect_to request.referer, alert: "Неверно указаны сроки проведения"
             return
         end
-        if @course.save
-            moderator = current_user.get_role_user('moderator')
-            if !moderator.nil?
-                @course.role_users << moderator
+        Course.transaction do
+            if @course.save
+              # Привязываем текущего пользователя к курсу в роли модератора, если это возможно
+              moderator = current_user.get_role_user('moderator')
+              @course.role_users << moderator if moderator
+      
+              redirect_to moderator_course_path(@course), notice: "Курс создан"
+            else
+              # Если курс не сохраняется из-за других ошибок валидации
+              render 'new', status: :unprocessable_entity
             end
-            redirect_to moderator_course_path(@course), notice: "Курс создан"
-        else
-            redirect_to request.referer, alert: "Произошла ошибка"
         end
+    rescue ActiveRecord::RecordInvalid
+        # В случае возникновения исключения в транзакции
+        redirect_to request.referer, alert: "Произошла ошибка"
     end
+
 
     def edit
     end
@@ -55,6 +69,9 @@ class Moderator::CoursesController < ModeratorController
         @teacher_role_users = RoleUser.joins(:role).where(roles: { name: 'teacher' })
     end
 
+    # Добавление преподавателей на курс
+    # TODO: нужно переделать, потому что преподы добавляются не на сам курс, а на дисциплину_на_курсе
+    #       поэтому нужно сделать добавление на конкретную дисицплину
     def update_teachers
         other_users = RoleUser.joins(:role, :courses).where.
             not(roles: { name: 'teacher'}).where( courses: { id: params[:id] }).ids
@@ -72,13 +89,18 @@ class Moderator::CoursesController < ModeratorController
         @student_role_users = RoleUser.joins(:role).where(roles: { name: 'student' })
     end
 
+    # TODO: добавление сделать также, как добавление в группу
+    # TODO: накинуть транзакцию
     def update_students
-        # Можно оптимизировать
+        # Получаем ID пользователей с ролями, отличными от 'student', связанных с курсом
         other_users = RoleUser.joins(:role, :courses).where.
             not(roles: { name: 'student'}).where( courses: { id: params[:id] }).ids
         
         merged_ids = other_users
+
+        # Собираем ID студентов из параметров, если они предоставлены
         if params[:course] && params[:course][:student_role_users].present?
+            # Объединяем ID студентов и нестудентов
             merged_ids = other_users | params[:course][:student_role_users].map(&:to_i)
         end
 
@@ -102,7 +124,8 @@ class Moderator::CoursesController < ModeratorController
         @course.destroy
         redirect_to moderator_courses_path
     end
-    
+
+    # TODO: реализовать возможность управление списком модераторов курса
 
     private
         def check_access_to_discipline
@@ -114,36 +137,3 @@ class Moderator::CoursesController < ModeratorController
             params.require(:course).permit(:name, :start_date, :end_date, :description, :teacher_role_users, :student_role_users, :discipline_ids)
         end
 end
-
-
-
-# def new
-    #     @course = Course.new
-    #     @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    #     @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
-    #     # @teacher_user =  User.joins(:roles).where(roles: { name: 'teacher' })
-    #     # @student_user =  User.joins(:roles).where(roles: { name: 'student' })
-    #     # Здесь еще всяких преподов, участников, материалы и прочее
-    # end
-
-    # def create
-    #     @course = Course.new(course_params)
-    #     if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
-    #         @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    #         @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
-    #         render 'new', notice: "Произошла ошибка"
-    #         return
-    #     end
-        
-    #     if @course.save
-    #         if params[:course][:teacher_role_user].present?
-    #             @course.role_user_ids = params[:course][:teacher_role_user]
-    #         end
-    #         if params[:course][:student_role_user].present?
-    #             @course.role_user_ids = params[:course][:student_role_user]
-    #         end
-    #         redirect_to @course, notice: "Курс создан"
-    #     else
-    #         render 'new', notice: "Произошла ошибка"
-    #     end
-    # end

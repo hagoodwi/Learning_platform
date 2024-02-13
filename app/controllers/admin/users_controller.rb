@@ -12,6 +12,7 @@ class Admin::UsersController < AdminController
       @courses_where_student = Course.joins(role_users: :role).where(role_users: { user_id: params[:id] }, roles: { name: 'student' }).where('courses.start_date <= ? AND courses.end_date >= ?', Date.today, Date.today)
     end
 
+    # Реализовать мезанизм редактирования профиля администратором
     def edit
       # @user = User.find(params[:id])
       # @user_roles = @user.roles

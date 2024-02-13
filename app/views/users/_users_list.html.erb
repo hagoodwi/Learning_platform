@@ -1,3 +1,11 @@
+<!-- Выводить скликабельный список пользователей -->
+
+<!-- 
+      TODO: сделать возможность менять ссылку (сейчас всегда ведет на профиль именно 
+      раздела администрирования, но может потребоваться, чтобы ссылки были просто на
+      общий профиль, доступный всем) 
+-->
+
 <% users.each do |user| %>
     <div class="d-flex text-body-secondary pt-3">
       <%= image_tag("users_image.png", alt: "mdo", width:"40", height: "40", class: "bd-placeholder-img flex-shrink-0 me-2 rounded") %>
