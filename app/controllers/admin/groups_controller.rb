@@ -1,11 +1,11 @@
 class Admin::GroupsController < AdminController
     def index
-        @groups = Group.all
+        @groups = Group.page(params[:page]).per(5)
     end
 
     def show
         @group = Group.find_by!(id: params[:id])
-        @users_in_group = @group.users
+        @users_in_group = @group.users.page(params[:page]).per(5)
     end
 
     def new
@@ -13,19 +13,33 @@ class Admin::GroupsController < AdminController
         @users = User.all
     end
 
+    # def create
+    #     @group = Group.new(group_params) 
+    #     if @group.save
+    #         if params[:group][:user_ids].present?
+    #             # @users_to_add = User.where(id: params[:group][:user_ids])
+    #             # @group.users << @users_to_add if @users_to_add.present?
+    #             @group.user_ids = params[:group][:user_ids]
+    #         end
+    #         redirect_to admin_group_path(@group)
+    #     else
+    #         render 'new'
+    #     end
+    # end
+
     def create
-        @group = Group.new(group_params) 
+        @group = Group.new(group_params)
+        # debugger
         if @group.save
-            if params[:group][:user_ids].present?
-                # @users_to_add = User.where(id: params[:group][:user_ids])
-                # @group.users << @users_to_add if @users_to_add.present?
-                @group.user_ids = params[:group][:user_ids]
-            end
-            redirect_to admin_group_path(@group)
+          # добавьте пользователей в группу
+          params[:user_ids].each do |user_id|
+            @group.users << User.find(user_id)
+          end
+          redirect_to admin_group_path(@group), notice: 'Группа успешно создана.'
         else
-            render 'new'
+          render :new
         end
-    end
+      end
 
     def edit
         @group = Group.find(params[:id])

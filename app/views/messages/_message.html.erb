@@ -1,0 +1,10 @@
+<div class="chat-message-<%= user.id == message.user_id ? 'right mb-4' : 'left pb-4' %> col-sm-9">
+	<div class="<%= user.id == message.user_id ? 'ms-3' : 'me-3' %>">
+        <%= image_tag("users_image.png", alt: message.user.full_name, width:"40", height: "40", class: "rounded-circle mr-1") %>
+	</div>
+	<div class="flex-shrink-1 rounded p-2 px-2 message-<%= user.id == message.user_id ? 'right' : 'left' %>">
+		<div class="fw-semibold mb-1"> <%= message.user.full_name %> </div>
+        <div class="lh-sm mb-0"> <%= simple_format(message.content.strip, class: 'custom-p-margin-chats') %> </div>
+        <div class="text-end text-muted small text-nowrap"> <%= l(message.created_at, format: :short) %> </div>
+	</div>
+</div>

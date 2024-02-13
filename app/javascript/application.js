@@ -2,11 +2,31 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+import 'search_user_add'
+import 'search_users_list'
 
 // import Rails from "@rails/ujs"
 // Rails.start()
 
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('turbo:load', () => {
+//   const currentUserId = document.body.getAttribute('data-current-user-id');
+//   const messages = document.querySelectorAll('.message');
+
+//   messages.forEach((message) => {
+//     const messageUserId = message.getAttribute('data-user-id');
+//     if (messageUserId === currentUserId) {
+//       message.classList.add('out');
+//       console.log("out")
+//     } else {
+//       message.classList.add('in');
+//       console.log("in")
+//       console.log("userID", currentUserId)
+//       console.log("messageUserId", messageUserId)
+//     }
+//   });
+// });
+
+document.addEventListener('turbo:load', function() {
     var addMaterialLink = document.getElementById('addMaterialLink');
     var addMaterialModal = document.getElementById('addMaterialModal');
 

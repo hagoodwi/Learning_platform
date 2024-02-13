@@ -4,9 +4,11 @@ class Moderator::DisciplinesController < ModeratorController
 
     def index
       if current_user.has_role?('admin')
-        @disciplines = Discipline.all
+        @disciplines = Discipline.page(params[:page]).per(5)
       else
-        @disciplines = Discipline.joins(role_users: :role).where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
+        @disciplines = Discipline.joins(role_users: :role)
+                                  .where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
+                                  .page(params[:page]).per(5)
       end
     end
 

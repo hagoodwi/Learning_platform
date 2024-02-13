@@ -1,0 +1,28 @@
+<div class="my-2 px-3 pb-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-3">
+    <h3 class="col-12 col-lg-auto me-lg-auto">Сообщения</h3>
+    <div class="text-end">
+      <%= button_to '+ Создать', new_chat_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+  <% @chats.each do |chat| %>
+  <div class="list-group my-2">
+	<%= link_to chat[:chat], class: "list-group-item list-group-item-action" do %>
+		<div class="d-flex w-100 justify-content-between">
+			<h4> <%= chat[:chat].name %> </h4>
+			<small class="text-muted"> <%= chat[:time_diff] %> </small>
+		</div>
+    <div class="my-2">
+      <text>
+        <% if chat[:last_message] %>  
+          <span class="fw-medium"><%= chat[:sender_name] %> - </span>
+          <span class=""><%= chat[:last_message].content %></span>
+        <% else %>
+          <span> Нет сообщений </span>
+        <% end %>
+      </text>
+    </div>
+	<% end %>
+  </div>
+<% end %>
+</div>

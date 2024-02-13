@@ -1,0 +1,8 @@
+<% users.each do |user| %>
+    <div class="d-flex text-body-secondary pt-3">
+      <%= image_tag("users_image.png", alt: "mdo", width:"40", height: "40", class: "bd-placeholder-img flex-shrink-0 me-2 rounded") %>
+      <div class="pb-4 mb-2 small lh-sm border-bottom w-100">
+        <strong class="d-block text-gray-dark mw-100"> <%= link_to user.full_name, admin_user_path(user), class: "link-list" %> </strong>
+      </div>
+    </div>
+<% end %>

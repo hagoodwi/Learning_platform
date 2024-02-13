@@ -63,7 +63,7 @@
                     <% @courses_where_student.each do |course| %>
                         <tr>
                         <td><%= label_tag "#{course.name}" %></td>
-                        <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
+                        <td><%= label_tag "#{I18n.l(course.start_date)} - #{I18n.l(course.end_date)}" %></td>
                         </tr>
                     <% end %>
                     </tbody>

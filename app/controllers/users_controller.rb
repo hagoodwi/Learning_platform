@@ -4,6 +4,22 @@ class UsersController < ApplicationController
         @user_roles = @user.roles
     end
 
+    def search_users
+        query = params[:query]
+        @users = User.full_text_search(params[:query])
+        respond_to do |format|
+          format.html { render partial: 'users/add_users_list', locals: { users: @users } }
+        end
+    end
+
+    def search_users_list
+        query = params[:query]
+        @users = User.full_text_search(params[:query])
+        respond_to do |format|
+          format.html { render partial: 'users/users_list', locals: { users: @users } }
+        end
+    end
+
     private
 
         def group_params

@@ -1,0 +1,38 @@
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Создание чата</h3>
+  </div>
+
+  <%= form_for @chat, url: chats_path do |f| %>
+    <div class="form-floating">
+      <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: ""  %>
+      <%= f.label "Название", for: "floatingInput", class: "form-label" %>
+    </div>
+
+    <div class="my-4">
+      <div class="d-flex flex-wrap align-items-center border-bottom pb-2">
+        <h4 class="col-lg-auto me-lg-auto">Добавление пользователей</h4>
+        <!-- Интерфейс поиска -->
+        <div class="row align-items-center">
+          <div class="col-auto d-flex">
+            <input type="text" id="search-query" class="form-control" placeholder="Поиск пользователя...">
+            <button class="ms-2 btn btn-outline-secondary" type="button" id="search-button">Поиск</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="align-items-center">
+          <h6 id="selected-users-label" class="col-12 col-lg-auto me-lg-auto pt-3" style="display: none;">Выбранные пользователи:</h6>
+      </div>
+      <div class="d-flex flex-wrap pb-3" id="selected-users">
+      <!-- Сюда будут добавляться выбранные пользователи -->
+      </div>
+
+      <div id="user-list">
+        <%= render partial: "users/add_users_list", locals: { users: @users } %>
+      </div>
+    </div>
+             
+    <%= f.submit 'Создать', class: "btn btn-primary w-100 py-2" %>
+  <% end %>
+</div>

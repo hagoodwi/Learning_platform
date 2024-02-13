@@ -1,6 +1,8 @@
 # Pin npm packages by running ./bin/importmap
 
 pin "application", preload: true
+pin "search_user_add", to: "search_user_add.js", preload: true
+pin "search_users_list", to: "search_users_list.js", preload: true
 pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
 pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true

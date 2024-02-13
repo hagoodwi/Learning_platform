@@ -21,15 +21,22 @@
         <tr>
           <td><%= label_tag "#{discipline.name}" %></td>
           <td><%= label_tag "#{discipline.materials.length}" %></td>
-          <td>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-              <%= link_to 'Edit', edit_moderator_discipline_path(discipline), class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Delete', moderator_discipline_path(discipline), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Show', moderator_discipline_path(discipline), class: "btn btn-outline-secondary btn-sm" %>
+          <td class="text-end">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Действия
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to 'Редактировать', edit_moderator_discipline_path(discipline), class: "dropdown-item" %>
+                <%= link_to 'Удалить', moderator_discipline_path(discipline), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
+                <%= link_to 'Просмотр', moderator_discipline_path(discipline), class: "dropdown-item"%>
+              </ul>
             </div>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+
+  <%= paginate @disciplines %>
 </div>

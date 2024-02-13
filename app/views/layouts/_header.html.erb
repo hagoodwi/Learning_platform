@@ -1,11 +1,14 @@
-<header class="p-3 text-bg-dark">
-  <nav>
+<header class="p-5">
+  <nav class="p-3 text-bg-dark fixed-top">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><%= link_to "Главная", root_path, class: "nav-link px-2 text-#{nav_active("/catalog")}" %></li>
           <li><%= link_to "Дисциплины", disciplines_path, class: "nav-link px-2 text-#{nav_active("/discipline")}" %></li>
           <li><%= link_to "Курсы", courses_path, class: "nav-link px-2 text-#{nav_active("/course")}" %></li>
+          <% if user_signed_in? %>
+            <li><%= link_to "Сообщения", chats_path, class: "nav-link px-2 text-#{nav_active("/chats")}" %></li>
+          <% end %>
           <% if current_user&.has_role?('moderator') || current_user&.has_role?('admin') %>
             <li><%= link_to "Модерирование", moderator_courses_path, class: "nav-link px-2 text-#{nav_active("/moderator")}" %></li>
           <% end %>

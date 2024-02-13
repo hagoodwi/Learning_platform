@@ -21,15 +21,21 @@
         <tr>
           <td><%= label_tag "#{group.name}" %></td>
           <td><%= label_tag "#{group.users.length}" %></td>
-          <td>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-              <%= link_to 'Edit', edit_admin_group_path(group), class: "btn btn-outline-secondary btn-sm" %>
-              <%= button_to 'Delete', admin_group_path(group), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Show', admin_group_path(group), class: "btn btn-outline-secondary btn-sm" %>
+          <td class="text-end">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Действия
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to 'Редактировать', edit_admin_group_path(group), class: "dropdown-item" %>
+                <%= link_to 'Удалить', admin_group_path(group), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
+                <%= link_to 'Просмотр', admin_group_path(group), class: "dropdown-item"%>
+              </ul>
             </div>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <%= paginate @groups %>
 </div>

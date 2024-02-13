@@ -4,9 +4,11 @@ class Moderator::CoursesController < ModeratorController
 
     def index
         if current_user.has_role?('admin')
-            @courses = Course.all
+            @courses = Course.page(params[:page]).per(5)
         else
-            @courses = Course.joins(role_users: :role).where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
+            @courses = Course.joins(role_users: :role)
+                                .where(role_users: { user_id: current_user.id, roles: { name: 'moderator' } })
+                                .page(params[:page]).per(5)
         end
     end
 

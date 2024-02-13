@@ -24,16 +24,17 @@
       <tr>
         <td><%= label_tag "#{role.name}" %></td>
         <td><%= label_tag "#{role.users.length}" %></td>
-        <td>
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <% if %w[admin teacher student moderator].include?(role.name)  %>
-              <%= button_to 'Delete', admin_role_path(role), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm", disabled: true %>
-            <% else %>
-              <%= button_to 'Delete', admin_role_path(role), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
-            <% end %>
-            <%= link_to 'Show', admin_role_path(role), class: "btn btn-outline-secondary btn-sm" %>
-          </div>
-        </td>
+        <td class="text-end">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Действия
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to 'Редактировать', "#", class: "dropdown-item" %>
+                <%= link_to 'Просмотр', admin_role_path(role), class: "dropdown-item"%>
+              </ul>
+            </div>
+          </td>
       </tr>
     <% end %>
   </tbody>

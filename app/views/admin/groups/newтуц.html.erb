@@ -1,0 +1,114 @@
+<%= render "admin/shared/nav" %>
+
+<%= form_for @group, url: admin_groups_path do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+
+  <div id="user-list">
+    <%= render partial: "users/add_users_list", locals: { users: @users } %>
+  </div>
+
+  <div id="selected-users">
+    <!-- Сюда будут добавляться выбранные пользователи -->
+  </div>
+
+  <%= f.submit "Создать группу" %>
+<% end %>
+<%= form_with url: admin_search_users_path, method: :get, remote: true, local: false, id: "search-form" do |f| %>
+    <%= f.text_field :query, placeholder: "Поиск пользователя..." %>
+    <%= f.submit "Поиск" %>
+  <% end %>
+
+<script>
+    function updateAvailableUserList() {
+        const selectedUserIds = new Set(
+            Array.from(document.querySelectorAll('#selected-users input[type="hidden"]'))
+                .map(input => input.value)
+        );
+
+        document.querySelectorAll('.user').forEach(userDiv => {
+            // Поиск кнопки "Добавить" внутри вложенного div
+            const addBtn = userDiv.querySelector('.add-user-btn');
+            if (!addBtn) return; // Пропускаем, если кнопка не найдена
+
+            console.log("asdasd")
+            const userId = addBtn.dataset.userId;
+            if (selectedUserIds.has(userId)) {
+                userDiv.style.display = 'none'; // Скрываем пользователя
+            } else {
+                userDiv.style.display = ''; // Показываем пользователя
+            }
+
+            // const userId = userDiv.querySelector('.add-user-btn').dataset.userId;
+            // if (selectedUserIds.has(userId)) {
+            //     userDiv.style.display = 'none'; // Скрываем пользователя
+            // } else {
+            //     userDiv.style.display = ''; // Показываем пользователя
+            // }
+        });
+    }
+
+    function assignEventHandlers() {
+        document.querySelectorAll('.add-user-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var userId = this.dataset.userId;
+                var userDiv = this.closest('.user');
+                var userName = userDiv.querySelector('.user-name').textContent; // Предполагаем, что имя пользователя находится в элементе с классом .user-name
+
+                var selectedUsersDiv = document.getElementById('selected-users');
+                var selectedUserDiv = document.createElement('div');
+                selectedUserDiv.textContent = userName;
+
+                // Добавляем скрытый input
+                var hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'user_ids[]';
+                hiddenInput.value = userId;
+                selectedUserDiv.appendChild(hiddenInput);
+
+                // Добавляем кнопку для удаления
+                var removeButton = document.createElement('button');
+                removeButton.textContent = 'Удалить';
+                removeButton.type = 'button';
+                removeButton.addEventListener('click', function() {
+                    selectedUserDiv.remove(); // Удаление пользователя из списка
+                    updateAvailableUserList();
+                });
+
+                selectedUserDiv.appendChild(removeButton);
+                selectedUsersDiv.appendChild(selectedUserDiv);
+                updateAvailableUserList();
+            });
+        });
+    }
+
+    function searchHandlers() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = this.querySelector('[name="query"]').value;
+
+            fetch(`/admin/search_users?query=${encodeURIComponent(query)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/html',
+                    'X-CSRF-Token': csrfToken
+                }
+            }).then(response => response.text())
+                .then(data => {
+                    document.getElementById("user-list").innerHTML = data;
+                    assignEventHandlers();
+                    updateAvailableUserList();
+                });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        assignEventHandlers();
+        searchHandlers();
+    });
+
+</script>

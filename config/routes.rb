@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     end
   end
   resources :users, only: [:edit, :update, :show]
+  get 'search_users', to: 'users#search_users'
+  get 'search_users_list', to: 'users#search_users_list'
+  
   resources :groups
   resources :courses do
     member do
@@ -57,8 +60,16 @@ Rails.application.routes.draw do
     end
     root "users#index"
     resources :roles
-    resources :groups
+    resources :groups do
+      # member do
+      #   get 'search_users' => 'groups#search_users'
+      #   
+      # end
+    end
   end
+
+  resources :chats
+  resources :messages, only: [:create]
 
   root "static_pages#home"
 end

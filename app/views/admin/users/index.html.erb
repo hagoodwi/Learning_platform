@@ -1,14 +1,17 @@
 <%= render "admin/shared/nav" %>    
 
 <div class="my-3 p-3 bg-body rounded shadow-sm">
-  <h3 class="border-bottom pb-2 mb-0">Список пользователей</h3>
-  
-  <% @users.each do |user| %>
-    <div class="d-flex text-body-secondary pt-3">
-      <%= image_tag("users_image.png", alt: "mdo", width:"40", height: "40", class: "bd-placeholder-img flex-shrink-0 me-2 rounded") %>
-      <div class="pb-4 mb-2 small lh-sm border-bottom w-100">
-        <strong class="d-block text-gray-dark mw-100"> <%= link_to user.full_name, admin_user_path(user), class: "link-list" %> </strong>
+  <div class="d-flex flex-wrap align-items-center pb-2 mb-2 border-bottom">
+    <h3 class="col-12 col-lg-auto me-lg-auto">Список пользователей</h3>
+    <div class="row g-3 align-items text-end">
+      <div class="col-auto d-flex">
+        <input type="text" id="search-users-list-query" class="form-control" placeholder="Поиск пользователя...">
+        <button class="ms-2 btn btn-outline-primary" type="button" id="search-users-list-button">Поиск</button>
       </div>
     </div>
-  <% end %>
+  </div>
+
+  <div id="user-list">
+    <%= render partial: "users/users_list", locals: { users: @users } %>
+  </div>
 </div>
