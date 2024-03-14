@@ -11,7 +11,7 @@ class Moderator::DisciplinesController < ModeratorController
     end
 
     def show
-      @available_materials = @discipline.materials
+      @materials = @discipline.materials
     end
 
     def new
@@ -34,11 +34,19 @@ class Moderator::DisciplinesController < ModeratorController
         redirect_to request.referer, alert: "Имя должно быть уникальным"
       end
     end
+    
+    def update_order
+      Rails.logger.info params[:ordered_ids].inspect
+      params[:ordered_ids].each_with_index do |id, index|
+        Material.find(id).update(order: index)
+      end
+      # Ответ сервера (например, статус 200 OK)
+    end
+  
 
     def edit
       @discipline = Discipline.find(params[:id])
-      # Не используется, но мб есть смысл здесь сразу делать запрос, а не в бд
-      # @available_materials = @discipline.materials
+      @materials = @discipline.materials
     end
 
     def update

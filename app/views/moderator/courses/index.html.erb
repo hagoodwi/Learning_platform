@@ -20,13 +20,21 @@
     <% @courses.each do |course| %>
         <tr>
           <td><%= label_tag "#{course.name}" %></td>
-          <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
+          <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
           <td>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-              <%= link_to 'Edit', edit_moderator_course_path(course), class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Delete', moderator_course_path(course), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm" %>
-              <%= link_to 'Show', moderator_course_path(course), class: "btn btn-outline-secondary btn-sm" %>
-            </div>
+            <%= "#{course.start_date.day} #{months_in_russian[course.start_date.month - 1]}, #{course.start_date.year} - #{course.end_date.day} #{months_in_russian[course.end_date.month - 1]}, #{course.end_date.year}" %>
+          </td>
+          <td class="text-end">
+                <div class="dropdown">
+                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton<%= course %>" data-bs-toggle="dropdown" aria-expanded="false">
+                    Действия
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= course %>">
+                  <%= link_to 'Редактировать', edit_moderator_course_path(course), class: "dropdown-item" %>
+                  <%= link_to 'Удалить', moderator_course_path(course), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
+                  <%= link_to 'Просмотр', moderator_course_path(course), class: "dropdown-item"%>
+                  </ul>
+                </div>
           </td>
         </tr>
       <% end %>

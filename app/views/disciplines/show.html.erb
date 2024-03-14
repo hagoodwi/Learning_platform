@@ -1,9 +1,6 @@
 <div class="my-3 p-3 bg-body rounded shadow-sm">
   <div class="d-flex flex-wrap align-items-center pb-2">
     <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto"><%= @discipline.name %></h3>
-    <div class="text-end">
-      <%= button_to 'Редактировать', edit_discipline_path(@discipline), :method => :get, type: "button", class: "btn btn-outline-secondary" %>
-    </div>
   </div>
   <div class="lead my-2 pb-2 border-bottom">Описание: <%= @discipline.description %></div>
   <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>

@@ -14,14 +14,12 @@
       <%= f.label "Название", for: "floatingInput", class: "form-label" %>
     </div>
 
-    <%= render partial: 'materials/materials_list', locals: { materials: @discipline.materials, discipline: @discipline } %>
-    <%= link_to 'Добавить материал', 'javascript:void(0);', id: 'addMaterialLink' %>
+    <%= render partial: 'materials/materials_list_edit', locals: { materials: @discipline.materials, discipline: @discipline} %>
+    <%= link_to 'Добавить материал', '#', id: 'addMaterialLink', class: "btn btn-outline-secondary" %>
 
     <div>
       <%= f.submit 'Сохранить', class: "btn btn-primary w-100 py-2" %>
     </div>
   <% end %>
-
-
     <%= render partial: 'materials/new_modal', locals: { discipline: @discipline } %>
   </div>

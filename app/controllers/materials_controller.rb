@@ -97,6 +97,10 @@ class MaterialsController < ApplicationController
   end
   
   def material_params
-    params.require(:material).permit(:file, :name, :discipline_id)
+    params.require(:material).permit(:file, :name, :discipline_id, :material_type_id).merge(order: next_order)
+  end
+  def next_order
+    # Получаем максимальное значение 'order' для материалов, связанных с конкретной дисциплиной, и увеличиваем его на 1
+    Material.where(discipline_id: params[:discipline_id]).maximum(:order).to_i + 1
   end
 end

@@ -46,14 +46,14 @@ end
      format.json { render json: @disciplines }
    end
  end
-
+#не используется
  def show
   @course = Course.find(params[:id])
   @schedules = Schedule.joins(course_disciplines: :discipline).where(course_disciplines: { course_id: @course.id })
   selected_date = params[:selected_date]&.to_date || Date.current
   @schedules_by_day = generate_schedules_by_day(selected_date)
  end
-
+#пока не используется
  def destroy
     @schedule = Schedule.find(params[:id])
     @schedule.destroy

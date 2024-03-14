@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_11_195031) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -119,12 +119,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_195031) do
     t.index ["material_id"], name: "index_material_accesses_on_material_id"
   end
 
+  create_table "material_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "materials", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "discipline_id", null: false
+    t.integer "material_type_id", null: false
+    t.integer "order"
     t.index ["discipline_id"], name: "index_materials_on_discipline_id"
+    t.index ["material_type_id"], name: "index_materials_on_material_type_id"
   end
 
   create_table "role_users", force: :cascade do |t|
@@ -144,8 +153,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_195031) do
 
   create_table "schedules", force: :cascade do |t|
     t.integer "course_discipline_id", null: false
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_discipline_id"], name: "index_schedules_on_course_discipline_id"
@@ -188,6 +197,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_195031) do
   add_foreign_key "groups_users", "users"
   add_foreign_key "material_accesses", "materials"
   add_foreign_key "materials", "disciplines"
+  add_foreign_key "materials", "material_types"
   add_foreign_key "role_users", "roles"
   add_foreign_key "role_users", "users"
   add_foreign_key "schedules", "course_disciplines"

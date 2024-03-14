@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       member do
         post 'attach_materials', to: 'disciplines#attach_materials', as: :attach_materials
         delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
+        post 'update_order', to: 'disciplines#update_order', as: :update_order
       end
     end
   end

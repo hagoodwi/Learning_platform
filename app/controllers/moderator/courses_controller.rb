@@ -14,6 +14,10 @@ class Moderator::CoursesController < ModeratorController
         @disciplines = @course.disciplines
         @teachers = RoleUser.joins(:role, :courses).where(roles: { name: 'teacher'}, courses: { id: params[:id] })
         @students = RoleUser.joins(:role, :courses).where(roles: { name: 'student'}, courses: { id: params[:id] })
+        @course = Course.find(params[:id])
+        @schedules = Schedule.joins(course_disciplines: :discipline).where(course_disciplines: { course_id: @course.id })
+        selected_date = params[:selected_date]&.to_date || Date.current
+        @schedules_by_day = generate_schedules_by_day(selected_date)
         # Здесь еще всяких преподов, участников, материалы и прочее
     end
 
@@ -103,6 +107,18 @@ class Moderator::CoursesController < ModeratorController
     
 
     private
+        def generate_schedules_by_day(selected_date)
+            start_date = selected_date.beginning_of_month
+            end_date = selected_date.end_of_month
+            (start_date..end_date).map do |date|
+            schedules = Schedule.joins("INNER JOIN course_disciplines ON course_disciplines.id=schedules.course_discipline_id
+            INNER JOIN disciplines ON disciplines.id=course_disciplines.discipline_id")
+                .where(course_disciplines: { course_id: @course.id })
+                .where('DATE(schedules.start_time) = ?', date)
+            puts schedules.inspect
+            { date: date, schedules: schedules }
+            end
+        end
         def check_access_to_discipline
             @course = Course.find(params[:id])
             redirect_to root_path, alert: 'Доступ запрещен' unless @course.role_users.exists?(user_id: current_user.id, role_id: Role.find_by(name: 'moderator')&.id) || @is_admin

@@ -20,9 +20,14 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= material.id %>">
                 <li><%= link_to 'Скачать', rails_blob_path(material.file, disposition: "attachment"), class: "dropdown-item" %></li>
+                <li><%= link_to 'Удалить', "#", data: { "material-id": material.id, "discipline-id": @discipline.id}, class: "delete-material-link dropdown-item" %></li>
                 <li><%= link_to 'Показать', discipline_material_path(@discipline, material), class: "dropdown-item" %></li>
               </ul>
             </div>
+          </td>
+          <td class="text-end">
+            <span>&uarr;</span>
+            <span>&darr;</span>
           </td>
         </tr>
       <% end %>
@@ -31,3 +36,33 @@
 <% else %>
   <p class="lead alert alert-info"> Нет доступных материалов </p>
 <% end %>
+<script>
+  document.addEventListener('turbo:load', function() {
+    var el = document.getElementById('materials-list');
+    new Sortable(el, {
+      onUpdate: function (evt) {
+        var orderedIds = Array.from(evt.to.children).map(function(item) { return item.id.split('-')[1]; });
+        fetch('<%= update_order_moderator_discipline_path(@discipline) %>', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+          },
+          body: JSON.stringify({ ordered_ids: orderedIds })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+</script>

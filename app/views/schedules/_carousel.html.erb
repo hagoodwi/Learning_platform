@@ -2,8 +2,21 @@
   <div class="carousel-inner">
     <% @schedules_by_day.each_with_index do |day, index| %>
       <div class="carousel-item <%= 'active' if index == 0 %>">
-      <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
-      <h3 style="text-align: center;"><%= "#{months_in_russian[day[:date].month - 1]} #{day[:date].strftime('%d, %Y')}" %></h3>
+      <div class="carousel-arrow">
+        <a class="carousel-control-prev" href="#scheduleCarousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </a>
+        <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
+        <% days_of_week_in_russian = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'] %>
+        <h3 style="text-align: center;">
+          <%= "#{days_of_week_in_russian[day[:date].wday]}, #{day[:date].strftime('%d')} #{months_in_russian[day[:date].month - 1]} #{day[:date].strftime('%Y')}" %>
+        </h3>
+        <a class="carousel-control-next" href="#scheduleCarousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </a>
+      </div>
         <table class="table">
           <thead>
             <tr>

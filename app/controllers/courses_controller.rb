@@ -4,9 +4,12 @@ class CoursesController < ApplicationController
     end
 
     def show
-        @course = Course.find(params[:id])
+        @disciplines = @course.disciplines
         @teachers = RoleUser.joins(:role, :courses).where(roles: { name: 'teacher'}, courses: { id: params[:id] })
         @students = RoleUser.joins(:role, :courses).where(roles: { name: 'student'}, courses: { id: params[:id] })
+        @schedules = Schedule.joins(course_disciplines: :discipline).where(course_disciplines: { course_id: @course.id })
+        selected_date = params[:selected_date]&.to_date || Date.current
+        @schedules_by_day = generate_schedules_by_day(selected_date)
         # Здесь еще всяких преподов, участников, материалы и прочее
     end
 

@@ -6,7 +6,7 @@ import * as bootstrap from "bootstrap"
 // import Rails from "@rails/ujs"
 // Rails.start()
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
     var addMaterialLink = document.getElementById('addMaterialLink');
     var addMaterialModal = document.getElementById('addMaterialModal');
 

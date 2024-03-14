@@ -1,42 +1,45 @@
+
 <h1>Новое расписание</h1>
 <div class="row">
-<div class="col-md-8">
-<%= form_with(model: @schedule, local: true) do |form| %>
-  <div>
-    <%= form.label :course_id, 'Выберите курс' %>
-    <%= form.collection_select :course_id, @courses, :id, :name, prompt: 'Выберите курс' %>
-  </div>
+  <div class="col-md-8">
+    <%= form_with(model: @schedule, local: true, class: 'needs-validation', novalidate: true) do |form| %>
 
-  <div id="disciplines" style="display: none;">
-    <%= form.label :discipline_id, 'Выберите дисциплину' %>
-    <%= form.collection_select :discipline_id, [], :id, :name, prompt: 'Выберите дисциплину' %>
-  </div>
+      <div class="mb-3">
+        <%= form.label :course_id, 'Выберите курс', class: 'form-label' %>
+        <%= form.collection_select :course_id, @courses, :id, :name, { prompt: 'Выберите курс' }, { class: 'form-select', required: true } %>
+      </div>
 
-  <div id="schedule-fields" style="display: none;">
-    <div class="time-fields">
-    <label>Время начала</label>
-    <input type="datetime-local" name="schedule[start_times][0]" value="" id="schedule_start_time">
-    <label>Время окончания</label>
-    <input type="datetime-local" name="schedule[end_times][0]" value="" id="schedule_end_time">
-    </div>
-  </div>
+      <div id="disciplines" class="mb-3" style="display: none;">
+        <%= form.label :discipline_id, 'Выберите дисциплину', class: 'form-label' %>
+        <%= form.collection_select :discipline_id, [], :id, :name, { prompt: 'Выберите дисциплину' }, { class: 'form-select', required: true } %>
+      </div>
 
-  <div id="add-time-link" style="display: none;">
-    <%= link_to 'Добавить еще время', 'javascript:void(0);', id: 'add-time' %>
-  </div>
+      <div id="schedule-fields" class="mb-3" style="display: none;">
+        <div class="row g-3 time-fields">
+          <div class="col-md-6">
+            <label>Время начала</label>
+            <input type="datetime-local" name="schedule[start_times][0]" value="" id="schedule_start_time">
+          </div>
+          <div class="col-md-6">
+            <label>Время окончания</label>
+            <input type="datetime-local" name="schedule[end_times][0]" value="" id="schedule_end_time">
+          </div>
+        </div>
+      </div>
 
-  <div>
-    <%= form.submit 'Создать расписание' %>
+      <div id="add-time-link" class="mb-3" style="display: none;">
+        <%= link_to 'Добавить еще время', 'javascript:void(0);', class: 'btn btn-outline-secondary', id: 'add-time' %>
+      </div>
+
+      <div>
+        <%= form.submit 'Создать расписание', class: 'btn btn-primary' %>
+      </div>
+
+    <% end %>
   </div>
-<% end %>
-</div>
-<!-- Левая колонка для таблицы -->
-<div class="col-md-4">
-  <!-- Твоя таблица или другой контент -->>
-</div>
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbo:load', function() {
     var courseSelect = document.querySelector('#schedule_course_id');
     var disciplinesDiv = document.getElementById('disciplines');
     var addTimeLink = document.getElementById('add-time');

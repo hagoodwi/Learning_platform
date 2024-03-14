@@ -12,6 +12,11 @@
             <%= form1.label "Название материала", for: "floatingInput", class: "form-label" %>
           </div>
 
+          <div class="my-1 form-floating">
+            <%= form1.collection_select :material_type_id, MaterialType.all, :id, :name, { prompt: "Выберите тип материала" }, { class: "form-select", id: "materialTypeSelect" } %>
+            <%= form1.label :material_type_id, "Тип материала", class: "form-label" %>
+          </div>
+
           <div>
             <%= form1.file_field :file, class: "form-control", id: "formFile", type: "file" %>
           </div>
@@ -44,7 +49,7 @@
      
   
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbo:load', function() {
     var visibleForAPeriodCheckbox = document.querySelector('#material_visible_for_a_period');
     var periodFields = document.getElementById('period-fields');
 

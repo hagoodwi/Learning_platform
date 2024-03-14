@@ -27,12 +27,12 @@ class DisciplinesController < ApplicationController
     end
   
     def show
-      @available_materials = Material.all
+      @materials = @discipline.materials
     end
   
     def edit
       @discipline = Discipline.find(params[:id])
-      @available_materials = @discipline.materials
+      @materials = @discipline.materials
     end
   
     def update
@@ -49,7 +49,7 @@ class DisciplinesController < ApplicationController
         @discipline.destroy
         redirect_to disciplines_path, notice: 'Дисциплина успешно удалена!'
     end
-  
+
     def detach_material
       @discipline = Discipline.find(params[:id])
       @material = @discipline.materials.find(params[:material_id])
@@ -59,7 +59,6 @@ class DisciplinesController < ApplicationController
         format.js
       end
     end
-  
     private
 
       def set_discipline

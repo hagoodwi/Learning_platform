@@ -11,6 +11,7 @@
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag 'rails-ujs' %>
     <%= javascript_include_tag 'https://code.jquery.com/jquery-3.6.4.min.js' %>
+    <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js' %>
 
   </head>
 
@@ -27,7 +28,6 @@
         <% end %>
         
         <%= yield %>
-        <%= debug(params) if Rails.env.development? %>
       </div>
     </div>
   </body>

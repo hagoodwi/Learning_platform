@@ -1,26 +1,27 @@
-<h1><%= @course.name %> - Расписание</h1>
-
 <div class="input-group mb-3">
   <span class="input-group-text">Выберите месяц:</span>
   <input type="month" class="form-control" id="monthPicker" value="<%= Time.now.strftime('%Y-%m') %>">
 </div>
-<div class="carousel-container">
-<a class="carousel-control-prev" href="#scheduleCarousel" role="button" data-bs-slide="prev">
-  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-  <span class="visually-hidden">Previous</span>
-</a>
-
-  <a class="carousel-control-next" href="#scheduleCarousel" role="button" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </a>
-</div>
 <div id="scheduleCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="86400000">
   <div class="carousel-inner">
-    <% @schedules_by_day.each_with_index do |day, index| %>
-      <div class="carousel-item <%= 'active' if index == 0 %>">
-      <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
-      <h3 style="text-align: center;"><%= "#{months_in_russian[day[:date].month - 1]} #{day[:date].strftime('%d, %Y')}" %></h3>
+  <% current_date = Date.current %>
+    <% schedules_by_day.each_with_index do |day, index| %>
+      <div class="carousel-item <%= 'active' if day[:date] == current_date %>">
+      <div class="carousel-arrow">
+        <a class="carousel-control-prev" href="#scheduleCarousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </a>
+        <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
+        <% days_of_week_in_russian = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'] %>
+        <h3 style="text-align: center;">
+          <%= "#{days_of_week_in_russian[day[:date].wday]}, #{day[:date].strftime('%d')} #{months_in_russian[day[:date].month - 1]} #{day[:date].strftime('%Y')}" %>
+        </h3>
+        <a class="carousel-control-next" href="#scheduleCarousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </a>
+      </div>
         <table class="table">
           <thead>
             <tr>
@@ -46,12 +47,16 @@
   </div>
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbo:load', function() {
+    var current_date = new Date().toISOString().split('T')[0]; // Получаем сегодняшнюю дату в формате YYYY-MM-DD
     var monthPicker = document.getElementById('monthPicker');
+    monthPicker.value = current_date.substring(0, 7); // Устанавливаем сегодняшний месяц и год в качестве значения monthPicker
+
     monthPicker.addEventListener('change', function() {
       var selectedDate = monthPicker.value;
       loadCarousel(selectedDate);
     });
+
     function loadCarousel(selectedDate) {
       var url = '<%= carousel_schedule_path(@course) %>';
       var params = { selected_date: selectedDate };

@@ -8,7 +8,10 @@
         <%= button_to 'Редактировать', edit_moderator_course_path(@course), :method => :get, type: "button", class: "btn btn-outline-secondary" %>
       </div>
     </div>
-    <span class="mark"><%= "#{@course.start_date} - #{@course.end_date}" %></span>
+    <span>
+    <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
+    <%= "#{@course.start_date.day} #{months_in_russian[@course.start_date.month - 1]}, #{@course.start_date.year} - #{@course.end_date.day} #{months_in_russian[@course.end_date.month - 1]}, #{@course.end_date.year}" %>
+    </span>
     <div class="lead my-2">Описание: <%= @course.description %></div>
   </div>
 </div>
@@ -111,4 +114,16 @@
       </tbody>
     </table>
   <% end %> 
+</div>
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h5 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Расписание</h5>
+    <div class="text-end">
+      <%= button_to '+ Создать', new_schedule_path, :method => :get, type: "button", class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+  <div id="schedule-container">
+  <%= render partial: 'schedules/show', locals: { schedules_by_day: @schedules_by_day, course: @course } %>
+  </div>    
 </div>

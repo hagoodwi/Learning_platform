@@ -23,9 +23,20 @@
   <%= render partial: 'materials/edit_access_modal', locals: { material: @material } %>
 </div>
 
+<iframe id="fileContentView" src="<%= rails_blob_url(@material.file) %>" style="width: 100%; height: 500px;"></iframe>
+
 <!-- Добавляем JavaScript для управления модальным окном -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbo:load', function() {
+    fetch('<%= rails_blob_url(@material.file) %>')
+    .then(response => response.text())
+    .then(text => {
+      var fileContentView = document.getElementById('fileContentView');
+      fileContentView.textContent = text;
+    })
+    .catch(error => console.error('Ошибка при загрузке файла:', error));
+  });
+  document.addEventListener('turbo:load', function() {
     var editAccessLink = document.getElementById('editAccessLink');
     var editAccessModal = document.getElementById('editAccessModal');
 

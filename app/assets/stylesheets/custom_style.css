@@ -1,15 +1,30 @@
-.carousel-control-prev-icon {
-    display: inline-block;
-    background-image: url('left.png');
-    margin-top: -130px;
-  }
-  
-  .carousel-control-next-icon {
-    display: inline-block;
-    background-image: url('right.png');
-    margin-top: -130px;
-  }
+/* Предполагается, что у вас есть контейнер, который оборачивает дату и стрелки */
+.carousel-arrow {
+  position: relative; /* Устанавливает контекст позиционирования для стрелок */
+  display: flex;
+  align-items: center; /* Центрирует содержимое по вертикали */
+  justify-content: center; /* Центрирует содержимое по горизонтали */
+}
 
+/* Позиционирование левой стрелки */
+.carousel-control-prev-icon {
+  position: absolute;
+  left: 0; /* Располагаем стрелку в начале контейнера */
+  top: 50%; /* Располагаем по центру относительно верхнего края контейнера */
+  transform: translateY(-50%); /* Сдвигаем стрелку на половину её высоты вверх для центрирования */
+  background-image: url('left.png'); /* Устанавливаем изображение стрелки */
+}
+
+/* Позиционирование правой стрелки */
+.carousel-control-next-icon {
+  position: absolute;
+  right: 0; /* Располагаем стрелку в конце контейнера */
+  top: 50%; /* Располагаем по центру относительно верхнего края контейнера */
+  transform: translateY(-50%); /* Сдвигаем стрелку на половину её высоты вверх для центрирования */
+  background-image: url('right.png'); /* Устанавливаем изображение стрелки */
+}
+
+/* Скрытие элементов для визуального отображения */
 .visually-hidden {
   position: absolute;
   width: 1px;
