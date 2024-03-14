@@ -1,5 +1,7 @@
 <%= render "admin/shared/nav" %>
 
+<!-- Страница для просмотра информации о пользователе АДМИНИСТРАТОРОМ -->
+<!-- TODO: продумать, что вообще на этой странице должно быть -->
 <div class="row">
     <div class="col-md-4">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
@@ -63,7 +65,7 @@
                     <% @courses_where_student.each do |course| %>
                         <tr>
                         <td><%= label_tag "#{course.name}" %></td>
-                        <td><%= label_tag "#{course.start_date} - #{course.end_date}" %></td>
+                        <td><%= label_tag "#{I18n.l(course.start_date)} - #{I18n.l(course.end_date)}" %></td>
                         </tr>
                     <% end %>
                     </tbody>

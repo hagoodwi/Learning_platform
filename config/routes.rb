@@ -20,6 +20,9 @@ Rails.application.routes.draw do
     get 'carousel', on: :member
   end
   resources :users, only: [:edit, :update, :show]
+  get 'search_users', to: 'users#search_users'
+  get 'search_users_list', to: 'users#search_users_list'
+  
   resources :groups
   resources :courses do
     member do
@@ -42,9 +45,12 @@ Rails.application.routes.draw do
       end
     end
     resources :disciplines do
-      resources :materials, only: [:new, :create, :show, :index]
+      resources :materials, only: [:new, :create, :show, :index] do
+        member do
+          patch 'update_access', to: 'materials#update_access', as: :update_access
+        end
+      end  
       member do
-        post 'attach_materials', to: 'disciplines#attach_materials', as: :attach_materials
         delete 'detach_material/:material_id', to: 'disciplines#detach_material', as: :detach_material
         post 'update_order', to: 'disciplines#update_order', as: :update_order
       end
@@ -59,8 +65,16 @@ Rails.application.routes.draw do
     end
     root "users#index"
     resources :roles
-    resources :groups
+    resources :groups do
+      # member do
+      #   get 'search_users' => 'groups#search_users'
+      #   
+      # end
+    end
   end
+
+  resources :chats
+  resources :messages, only: [:create]
 
   root "static_pages#home"
 end

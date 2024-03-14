@@ -1,5 +1,7 @@
 <%= render "moderator/shared/nav" %>
 
+<!-- TODO: мб делать вывод не таблицей, а списком, как на странице просмотра всех пользователей -->
+
 <div class="my-3 p-3 bg-body rounded shadow-sm">
   <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
     <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Курсы</h3>
@@ -20,24 +22,22 @@
     <% @courses.each do |course| %>
         <tr>
           <td><%= label_tag "#{course.name}" %></td>
-          <% months_in_russian = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %>
-          <td>
-            <%= "#{course.start_date.day} #{months_in_russian[course.start_date.month - 1]}, #{course.start_date.year} - #{course.end_date.day} #{months_in_russian[course.end_date.month - 1]}, #{course.end_date.year}" %>
-          </td>
+          <td><%= I18n.l(course.start_date) %> - <%= I18n.l(course.end_date) %></td>
           <td class="text-end">
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton<%= course %>" data-bs-toggle="dropdown" aria-expanded="false">
-                    Действия
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= course %>">
-                  <%= link_to 'Редактировать', edit_moderator_course_path(course), class: "dropdown-item" %>
-                  <%= link_to 'Удалить', moderator_course_path(course), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
-                  <%= link_to 'Просмотр', moderator_course_path(course), class: "dropdown-item"%>
-                  </ul>
-                </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Действия
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to 'Редактировать', edit_moderator_course_path(course), class: "dropdown-item" %>
+                <%= link_to 'Удалить', moderator_course_path(course), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
+                <%= link_to 'Просмотр', moderator_course_path(course), class: "dropdown-item"%>
+              </ul>
+            </div>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <%= paginate @courses %>
 </div>

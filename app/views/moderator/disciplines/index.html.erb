@@ -22,19 +22,21 @@
           <td><%= label_tag "#{discipline.name}" %></td>
           <td><%= label_tag "#{discipline.materials.length}" %></td>
           <td class="text-end">
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton<%= discipline %>" data-bs-toggle="dropdown" aria-expanded="false">
-              Действия
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= discipline %>">
-              <%= link_to 'Редактировать', edit_moderator_discipline_path(discipline), class: "dropdown-item" %>
-              <%= link_to 'Удалить', moderator_discipline_path(discipline), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
-              <%= link_to 'Просмотр', moderator_discipline_path(discipline), class: "dropdown-item" %>
-            </ul>
-          </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Действия
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to 'Редактировать', edit_moderator_discipline_path(discipline), class: "dropdown-item" %>
+                <%= link_to 'Удалить', moderator_discipline_path(discipline), data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item" %>
+                <%= link_to 'Просмотр', moderator_discipline_path(discipline), class: "dropdown-item"%>
+              </ul>
+            </div>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+
+  <%= paginate @disciplines %>
 </div>

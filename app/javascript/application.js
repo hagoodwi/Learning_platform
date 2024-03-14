@@ -2,6 +2,8 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+import 'search_user_add'
+import 'search_users_list'
 
 // import Rails from "@rails/ujs"
 // Rails.start()

@@ -1,5 +1,6 @@
 <%= render "admin/shared/nav" %>
 
+<!-- TODO: подумать про пагинацию и возможно перенести кнопку повыше -->
 <div class="my-3 p-3 bg-body rounded shadow-sm">
   <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
     <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Создание группы</h3>
@@ -16,28 +17,30 @@
       <%= f.label "Описание", for: "floatingInput", class: "form-label" %>
     </div>
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Фамилия</th>
-          <th scope="col">Имя</th>
-          <th scope="col">Отчество</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @users.each do |user| %>
-          <tr>
-            <th scope="row">
-              <%= check_box_tag 'group[user_ids][]', user.id, @group.users.include?(user) %>
-            </th>
-            <td><%= label_tag "#{user.user_profile.last_name}" %></td>
-            <td><%= label_tag "#{user.user_profile.first_name}" %></td>
-            <td><%= label_tag "#{user.user_profile.second_name}" %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>           
+    <div class="my-4">
+      <div class="d-flex flex-wrap align-items-center border-bottom pb-2">
+        <h4 class="col-lg-auto me-lg-auto">Добавление пользователей</h4>
+        <!-- Интерфейс поиска -->
+        <div class="row align-items-center">
+          <div class="col-auto d-flex">
+            <input type="text" id="search-query" class="form-control" placeholder="Поиск пользователя...">
+            <button class="ms-2 btn btn-outline-primary" type="button" id="search-button">Поиск</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="align-items-center">
+          <h6 id="selected-users-label" class="col-12 col-lg-auto me-lg-auto pt-3" style="display: none;">Выбранные пользователи:</h6>
+      </div>
+      <div class="d-flex flex-wrap pb-3" id="selected-users">
+      <!-- Сюда будут добавляться выбранные пользователи -->
+      </div>
+
+      <div id="user-list">
+        <%= render partial: "users/add_users_list", locals: { users: @users } %>
+      </div>
+    </div>
+             
     <%= f.submit 'Создать', class: "btn btn-primary w-100 py-2" %>
   <% end %>
 </div>

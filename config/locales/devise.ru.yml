@@ -1,0 +1,4 @@
+ru:
+  devise:
+    sessions:
+      signed_in: 'Добро пожаловать в платформу'

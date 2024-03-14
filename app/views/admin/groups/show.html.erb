@@ -17,6 +17,7 @@
     <h5 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Пользователи в группе</h5>
   </div>
 
+  <!-- TODO: мб делать вывод не таблицей, а списком, как на странице просмотра всех пользователей -->
   <table class="table table-striped">
     <thead>
       <tr>
@@ -35,4 +36,5 @@
       <% end %>
     </tbody>
   </table>
+  <%= paginate @users_in_group %>
 </div>

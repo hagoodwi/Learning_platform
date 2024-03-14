@@ -1,0 +1,70 @@
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+    overflow-y: scroll
+}
+
+.chat-message-left,
+.chat-message-right {
+    display: flex;
+    flex-shrink: 0
+}
+
+.chat-message-left {
+    margin-right: auto
+}
+
+.chat-message-right {
+    flex-direction: row-reverse;
+    margin-left: auto
+}
+.py-3 {
+    padding-top: 1rem!important;
+    padding-bottom: 1rem!important;
+}
+.px-4 {
+    padding-right: 1.5rem!important;
+    padding-left: 1.5rem!important;
+}
+.flex-grow-0 {
+    flex-grow: 0!important;
+}
+.border-top {
+    border-top: 1px solid #dee2e6!important;
+}
+.message-right {
+    background-color: #d8eaf3;
+}
+.message-left {
+    background-color: #eeeeee;
+}
+
+/* Стили для кастомного скроллбара */
+.chat-messages::-webkit-scrollbar {
+  width: 10px;
+  display: none;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #eaeaea;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.chat-messages {
+    max-width: 100%;
+    height: 500px;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #eaeaea;
+}
+
+.custom-p-margin-chats {
+    margin-bottom: 5px; /* или любой другой размер отступа, который вам нужен */
+}

@@ -1,0 +1,57 @@
+<%= turbo_stream_from @chat %>
+
+<main class="content">
+    <div class="container p-0">
+		<!-- Контейнер для заголовка и информации об участниках -->
+		<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mx-2">
+			<!-- Контейнер для заголовка и количества участников -->
+			<div>
+				<div class="h3 mb-0"><%= @chat.name %></div>
+				<div class="text-body-secondary">Участников: <%= @chat.users.length %></div>
+			</div>
+			<!-- Кнопка действий -->
+			<div class="text-lg-end">
+				<div class="dropdown">
+					<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+						Действия
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<%= link_to 'Добавить участника', "№", class: "dropdown-item" %>
+						<li><hr class="dropdown-divider"></li>
+						<%= link_to 'Удалить', @chat, data: { "turbo-method": :delete, confirm: 'Are you sure?'}, class: "dropdown-item text-danger" %>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="card m-2">
+			<div class="row g-0">
+				<div class="col-12">
+					<div class="position-relative bg-light">						
+						<% if @messages.empty? %>
+							<div class="chat-messages p-3 d-flex justify-content-center align-items-center" style="max-width: 100%; height: 500px;" id="chat-container">								
+								<h3 class="fw-normal" style="color: #b3b8bb">Начните общение...</h3>
+							</div>
+						<% else %>
+							<div class="chat-messages p-3 overflow-auto" id="chat-container">								
+								<%= turbo_frame_tag :messages do %>
+									<%= render partial: "messages/message", collection: @messages, locals: { user: current_user}%>
+								<% end %>
+							</div>
+						<% end %>							
+					</div>
+
+					<div class="flex-grow-0 py-3 px-4 border-top">
+                        <%= form_with model: @new_message, data: { controller: "chat_refresh", action: "turbo:submit-end->chat_refresh#clearInput" } do |f| %>
+                            <div class="input-group">
+                                <%= f.text_area :content, class: "form-control", type: "text", placeholder: "Ваше сообщение" %>
+                                <%= f.hidden_field :chat_id, value: @chat.id  %>
+                                <%= f.submit 'Отправить', class: "btn btn-primary" %>
+                            </div>
+                        <% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

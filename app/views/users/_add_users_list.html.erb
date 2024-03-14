@@ -1,0 +1,22 @@
+<!-- Выводит список пользователей с кнопкой для добавления
+     Добавление должно работать через js, который словит клик на кнопку
+     Пример представлен в реализации добавления пользователей в группы или чаты -->
+
+<% if !users.empty? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Фамилия Имя Отчество</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% users.each do |user| %>
+        <tr class="user">
+          <td class="user-name" ><%= user.full_name %></td>
+          <td><%= button_tag "Добавить", type: "button", class: "btn btn-link add-user-btn", data: { user_id: user.id } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

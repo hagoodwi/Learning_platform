@@ -1,0 +1,32 @@
+<h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Добро пожаловать, <%= @resource.full_name %>!</h3>
+<p>Спасибо за регистрацию в нашем сервисе.</p>
+<p>Пожалуйста, подтвердите вашу учётную запись, нажав на кнопку ниже:</p>
+<p><%= link_to 'Подтвердить аккаунт', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p>Добро пожаловать, <%= @resource.full_name %>!</p>
+<p>Для подтверждения регистрации пройдите по ссылке:</p>
+<p><%= link_to 'подтверждение регистрации', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+  <div class="d-flex flex-wrap align-items-center pb-2 border-bottom">
+    <h3 class=" pb-2 mb-0 col-12 col-lg-auto me-lg-auto">Создание курса</h3>
+    <div class="text-end">
+      <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), class: "btn btn-outline-secondary" %></p>
+    </div>
+  </div>
+</div>
+
+<div class="email-container">
+    <div class="header">
+        Добро пожаловать в [Название Сервиса]!
+    </div>
+    <div class="content">
+        <p>Здравствуйте, <%= @resource.full_name %>!</p>
+        <p>Спасибо за регистрацию в нашем сервисе. Пожалуйста, подтвердите вашу учётную запись, нажав на кнопку ниже:</p>
+        <a href="<%= confirmation_url(@resource, confirmation_token: @token) %>" class="btn-confirm">Подтвердить аккаунт</a>
+    </div>
+    <div class="footer">
+        С уважением,<br>
+        Команда [Название Сервиса]
+    </div>
+</div>

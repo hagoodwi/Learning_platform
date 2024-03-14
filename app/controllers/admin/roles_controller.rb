@@ -5,7 +5,6 @@ class Admin::RolesController < AdminController
 
     def show
         @role = Role.find(params[:id])
-        # @users_with_role = RoleUser.joins(:role).where(roles: { name: @role.name })
         @users_with_role = @role.users
     end
 
@@ -16,15 +15,19 @@ class Admin::RolesController < AdminController
 
     def create
         @role = Role.new(role_params)
-        if @role.save
-            if params[:role][:user_ids].present?
-                @role.user_ids = params[:role][:user_ids]
-            end
+        Role.transaction do
+          if @role.save
+            @role.user_ids = params[:role][:user_ids] if params[:role][:user_ids].present?
             redirect_to admin_role_path(@role), notice: "Роль создана"
-        else
-            render 'new', notice: "Произошла ошибка"
+          else
+            render 'new', status: :unprocessable_entity
+          end
         end
+    rescue ActiveRecord::RecordInvalid
+      render 'new', status: :unprocessable_entity
     end
+
+    # TODO: реализовать функционал для редактирования ролей
 
     def destroy
         @role = Role.find(params[:id])

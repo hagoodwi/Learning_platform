@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_185858) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,9 +42,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_chats_on_name"
+    t.index ["user_id"], name: "index_chats_on_user_id"
+  end
+
+  create_table "chats_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_chats_users_on_chat_id"
+    t.index ["user_id"], name: "index_chats_users_on_user_id"
+  end
+
   create_table "course_disciplines", force: :cascade do |t|
-    t.integer "course_id", null: false
-    t.integer "discipline_id", null: false
+    t.bigint "course_id", null: false
+    t.bigint "discipline_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_course_disciplines_on_course_id"
@@ -49,8 +70,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   end
 
   create_table "course_disciplines_role_users", force: :cascade do |t|
-    t.integer "role_user_id", null: false
-    t.integer "course_discipline_id", null: false
+    t.bigint "role_user_id", null: false
+    t.bigint "course_discipline_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_discipline_id"], name: "index_course_disciplines_role_users_on_course_discipline_id"
@@ -67,8 +88,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   end
 
   create_table "courses_role_users", force: :cascade do |t|
-    t.integer "course_id", null: false
-    t.integer "role_user_id", null: false
+    t.bigint "course_id", null: false
+    t.bigint "role_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_courses_role_users_on_course_id"
@@ -85,8 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   end
 
   create_table "disciplines_role_users", force: :cascade do |t|
-    t.integer "role_user_id", null: false
-    t.integer "discipline_id", null: false
+    t.bigint "role_user_id", null: false
+    t.bigint "discipline_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["discipline_id"], name: "index_disciplines_role_users_on_discipline_id"
@@ -101,8 +122,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   end
 
   create_table "groups_users", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "group_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_groups_users_on_group_id"
@@ -110,7 +131,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   end
 
   create_table "material_accesses", force: :cascade do |t|
-    t.integer "material_id", null: false
+    t.bigint "material_id", null: false
     t.boolean "always_open"
     t.datetime "start_time"
     t.datetime "end_time"
@@ -130,15 +151,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "discipline_id", null: false
-    t.integer "material_type_id", null: false
-    t.integer "order"
     t.index ["discipline_id"], name: "index_materials_on_discipline_id"
-    t.index ["material_type_id"], name: "index_materials_on_material_type_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.string "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "role_users", force: :cascade do |t|
-    t.integer "role_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "role_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["role_id"], name: "index_role_users_on_role_id"
@@ -165,7 +193,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
     t.string "second_name"
     t.string "last_name"
     t.boolean "is_block"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_profiles_on_user_id"
@@ -177,6 +205,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -185,6 +222,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chats", "users"
+  add_foreign_key "chats_users", "chats"
+  add_foreign_key "chats_users", "users"
   add_foreign_key "course_disciplines", "courses"
   add_foreign_key "course_disciplines", "disciplines"
   add_foreign_key "course_disciplines_role_users", "course_disciplines"
@@ -198,6 +238,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   add_foreign_key "material_accesses", "materials"
   add_foreign_key "materials", "disciplines"
   add_foreign_key "materials", "material_types"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
   add_foreign_key "role_users", "roles"
   add_foreign_key "role_users", "users"
   add_foreign_key "schedules", "course_disciplines"
