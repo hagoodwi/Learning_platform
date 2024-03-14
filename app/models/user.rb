@@ -61,7 +61,7 @@ class User < ApplicationRecord
   private
     # Все подефолту получают изначально роль студента 
     def assign_user_role
-      user_role = Role.find_or_create_by(name: "студент")
+      user_role = Role.find_or_create_by(name: "admin")
       self.roles << user_role
     end
 

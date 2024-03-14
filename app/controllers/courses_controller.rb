@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
     end
 
     def show
+        @course = Course.find(params[:id])
         @disciplines = @course.disciplines
         @teachers = RoleUser.joins(:role, :courses).where(roles: { name: 'teacher'}, courses: { id: params[:id] })
         @students = RoleUser.joins(:role, :courses).where(roles: { name: 'student'}, courses: { id: params[:id] })
@@ -12,114 +13,20 @@ class CoursesController < ApplicationController
         @schedules_by_day = generate_schedules_by_day(selected_date)
         # Здесь еще всяких преподов, участников, материалы и прочее
     end
-
-    # def new
-    #     @course = Course.new
-    #     @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    #     @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
-    #     # @teacher_user =  User.joins(:roles).where(roles: { name: 'teacher' })
-    #     # @student_user =  User.joins(:roles).where(roles: { name: 'student' })
-    #     # Здесь еще всяких преподов, участников, материалы и прочее
-    # end
-
-    # def create
-    #     @course = Course.new(course_params)
-    #     if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
-    #         @teacher_role_user = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    #         @student_role_user = RoleUser.joins(:role).where(roles: { name: 'student' })
-    #         render 'new', notice: "Произошла ошибка"
-    #         return
-    #     end
-        
-    #     if @course.save
-    #         if params[:course][:teacher_role_user].present?
-    #             @course.role_user_ids = params[:course][:teacher_role_user]
-    #         end
-    #         if params[:course][:student_role_user].present?
-    #             @course.role_user_ids = params[:course][:student_role_user]
-    #         end
-    #         redirect_to @course, notice: "Курс создан"
-    #     else
-    #         render 'new', notice: "Произошла ошибка"
-    #     end
-    # end
-
-    def new
-        @course = Course.new
-    end
-
-    def create
-        @course = Course.new(course_params)
-        if @course.start_date.nil? || @course.end_date.nil? || @course.start_date > @course.end_date
-            render 'new', notice: "Произошла ошибка"
-            return
-        end
-        if @course.save
-            redirect_to @course, notice: "Курс создан"
-        else
-            render 'new', notice: "Произошла ошибка"
-        end
-    end
-
-    def edit
-        @course = Course.find(params[:id])
-    end
-
-    def update
-        @course = Course.find(params[:id])
-        if @course.update(course_params)
-          redirect_to @course
-        else
-          render 'edit'
-        end
-    end
-
-    def edit_teachers
-        @course = Course.find(params[:id])
-        @teacher_role_users = RoleUser.joins(:role).where(roles: { name: 'teacher' })
-    end
-
-    def update_teachers
-        @course = Course.find(params[:id])
-        other_users = RoleUser.joins(:role, :courses).where.
-            not(roles: { name: 'teacher'}).where( courses: { id: params[:id] }).ids
-
-        merged_ids = other_users
-        if params[:course] && params[:course][:teacher_role_users].present?
-            merged_ids = other_users | params[:course][:teacher_role_users].map(&:to_i)
-        end
-
-        @course.role_user_ids = merged_ids
-        redirect_to @course
-    end
-
-    def edit_students
-        @course = Course.find(params[:id])
-        @student_role_users = RoleUser.joins(:role).where(roles: { name: 'student' })
-    end
-
-    def update_students
-        @course = Course.find(params[:id])
-        other_users = RoleUser.joins(:role, :courses).where.
-            not(roles: { name: 'student'}).where( courses: { id: params[:id] }).ids
-        
-        merged_ids = other_users
-        if params[:course] && params[:course][:student_role_users].present?
-            merged_ids = other_users | params[:course][:student_role_users].map(&:to_i)
-        end
-
-        @course.role_user_ids = merged_ids
-        redirect_to @course
-    end
-
-    def destroy
-        @course = Course.find(params[:id])
-        @course.destroy
-        redirect_to courses_path
-    end
     
-
     private
+        def generate_schedules_by_day(selected_date)
+            start_date = selected_date.beginning_of_month
+            end_date = selected_date.end_of_month
+            (start_date..end_date).map do |date|
+            schedules = Schedule.joins("INNER JOIN course_disciplines ON course_disciplines.id=schedules.course_discipline_id
+            INNER JOIN disciplines ON disciplines.id=course_disciplines.discipline_id")
+                .where(course_disciplines: { course_id: @course.id })
+                .where('DATE(schedules.start_time) = ?', date)
+            puts schedules.inspect
+            { date: date, schedules: schedules }
+            end
+        end
         def course_params
             params.require(:course).permit(:name, :start_date, :end_date, :description, :teacher_role_users, :student_role_users)
         end

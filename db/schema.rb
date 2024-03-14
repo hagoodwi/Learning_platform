@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_15_185858) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_17_003109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -150,8 +150,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_185858) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "discipline_id", null: false
+    t.bigint "discipline_id", null: false
+    t.bigint "material_type_id", null: false
+    t.integer "order"
     t.index ["discipline_id"], name: "index_materials_on_discipline_id"
+    t.index ["material_type_id"], name: "index_materials_on_material_type_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -180,7 +183,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_185858) do
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.integer "course_discipline_id", null: false
+    t.bigint "course_discipline_id", null: false
     t.datetime "start_time", null: false
     t.datetime "end_time", null: false
     t.datetime "created_at", null: false
